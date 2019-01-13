@@ -2,6 +2,7 @@ from os import sys, path
 from lxml import html
 from os.path import join, dirname
 import requests
+import re
 from . import constants
 
 
