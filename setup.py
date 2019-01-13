@@ -1,5 +1,12 @@
 import setuptools
 
+requires = [
+    'requests>=2.21.0',
+    'lxml>=4.2.1',
+    'beautifulsoup4>=4.6.0'
+]
+
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
