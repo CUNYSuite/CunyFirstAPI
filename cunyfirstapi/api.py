@@ -59,7 +59,7 @@ CUNY_FIRST_LOGOUT_3_URL = 'https://ssologin.cuny.edu/oamsso-bin/logout.pl?end_ur
 The Cuny Navigator makes moving around the cunyFirst website
 alot easier.
 '''
-class CunyFirstAPI():
+class CUNYFirstAPI():
 
     session = None
 
