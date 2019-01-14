@@ -28,6 +28,9 @@ class CUNYFirstAPI():
 
         self._session = new_session
 
+    def restart_session(self):
+        self._session = requests.Session()
+
     def logout(self):
         try:
             self._session.get(constants.CUNY_FIRST_LOGOUT_URL)
@@ -38,60 +41,68 @@ class CUNYFirstAPI():
             return False 
 
     def login(self, username, password):
-            self._session.get(constants.CUNY_FIRST_HOME_URL)
+        self._session.get(constants.CUNY_FIRST_HOME_URL)
 
-            # AUTH LOGIN
-            username = re.sub(r'@login\.cuny\.edu','',username)         # just in case, remove @login stuff
+        # AUTH LOGIN
+        username = re.sub(r'@login\.cuny\.edu','',username)         # just in case, remove @login stuff
 
-            data = {
-                'usernameH': f'{username}@login.cuny.edu',
-                'username': username,
-                'password': password,
-                'submit': ''
-            }
+        data = {
+            'usernameH': f'{username}@login.cuny.edu',
+            'username': username,
+            'password': password,
+            'submit': ''
+        }
 
-            self._session.post(
-                url = constants.CUNY_FIRST_AUTH_SUBMIT_URL, 
-                data = data
-            )
+        self._session.post(
+            url = constants.CUNY_FIRST_AUTH_SUBMIT_URL, 
+            data = data
+        )
 
-            # STUDENT CENTER
-            response = self._session.get(constants.CUNY_FIRST_STUDENT_CENTER_URL)
+        # STUDENT CENTER
+        response = self._session.get(constants.CUNY_FIRST_STUDENT_CENTER_URL)
 
-            tree = html.fromstring(response.text)
+        tree = html.fromstring(response.text)
 
-            try:
-                encquery = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
-            except IndexError:
-                return None
+        try:
+            encquery = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
+        except IndexError:
+            return None
 
-            data = {'enc_post_data': encquery}
+        data = {'enc_post_data': encquery}
 
-            response = self._session.post(
-                url = constants.CUNY_FIRST_LOGIN_URL, 
-                data = data
-            )
-            tree = html.fromstring(response.text)
+        response = self._session.post(
+            url = constants.CUNY_FIRST_LOGIN_URL, 
+            data = data
+        )
+        tree = html.fromstring(response.text)
 
-            try:
-                encreply = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
-            except IndexError:
-                return None
+        try:
+            encreply = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
+        except IndexError:
+            return None
 
-            data = {'enc_post_data': encreply}
-            self._session.post(
-                url = constants.CUNY_FIRST_LOGIN_2_URL, 
-                data=data
-            )
-            response = self._session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
+        data = {'enc_post_data': encreply}
+        self._session.post(
+            url = constants.CUNY_FIRST_LOGIN_2_URL, 
+            data=data
+        )
+        response = self._session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
 
-            return response
+        return response
 
     def to_login(self):
         return self._session.get(constants.CUNY_FIRST_HOME_URL)
 
-    def to_student_center(self):
-        response = self._session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
+    def to_student_center(self, data=None, headers=None):
+        if data is None:
+            request_method = self._session.get
+        else:
+            request_method = self._session.post
+
+        if headers is None:
+            headers = self._session.headers
+
+        response = request_method(url=constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL, data=data, headers=headers)
         
         return response
 
@@ -123,8 +134,7 @@ class CUNYFirstAPI():
         data['DERIVED_SSS_SCL_SSS_MORE_PROFILE'] = '9999'
 
         # set url to student center menu
-        url = constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL
-        response = self._session.post(url = url, data = data)                 # post data to student center menu
+        self.to_student_center(data=data)
        
         # navigate to the academics page
         self._session.get(constants.CUNY_FIRST_MY_ACADEMICS_URL)
@@ -137,7 +147,7 @@ class CUNYFirstAPI():
         data['DERIVED_SSTSNAV_SSTS_MAIN_GOTO$8$'] = '9999'
 
         # go to transcript request page by posting data saying we want to go
-        response = self._session.post(url, data = data)
+        response = self._session.post(url, data=data)
 
         #data['url'] = url
 
@@ -147,7 +157,7 @@ class CUNYFirstAPI():
 
         return response
 
-    def download_transcript(self, college_code, data = None):
+    def download_transcript(self, college_code, data=None):
         if data is None:
             data = {'ICElementNum': '0'}
         # modify the form data to say we declared a college to pick from
@@ -163,33 +173,20 @@ class CUNYFirstAPI():
         data['ICAction'] = 'SA_REQUEST_HDR_INSTITUTION'
         data['SA_REQUEST_HDR_INSTITUTION'] = college_code
         data['ICYPos'] ='115'
-        data['ICBcDomData'] = ''
-        data['DERIVED_SSTSRPT_TSCRPT_TYPE3'] = ''
-        data['ptus_componenturl'] = 'https://hrsa.cunyfirst.cuny.edu/psp/cnyhcprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_TSRQST_UNOFF.GBL'
-        #pprint(data)
+
         # tell it we picked that college
-        r = self._session.post(url,data=data)
-        #print('[DEBUG] 3/5 requests completed...')
-        #pprint(data)
-        #print(r.text)
+        r = self._session.post(url, data=data)
 
         # tell it we selected "Student Unofficial Transcript"
         data['ICStateNum'] = '6'
-        r = self._session.post(url,data=data)
-        #print('[DEBUG] 4/5 requests completed...')
-        #pprint(data)
-        #print(r.text)
+        r = self._session.post(url, data=data)
 
         # submit our final request to view report
         data['ICStateNum'] = '7'
         data['ICAction'] = 'GO'
         data['DERIVED_SSTSRPT_TSCRPT_TYPE3'] = 'STDNT'
 
-        r = self._session.post(url,data=data)
-        #print('[DEBUG] 5/5 requests completed...')
-        #print('[DEBUG] Retrieving PDF from URL...')
-        #pprint(data)
-        #print(r.text)
+        r = self._session.post(url, data=data)
 
         # the response contains the url of the transcript. extract with regex
         pdfurl = re.search(r'window.open\(\'(https://hrsa\.cunyfirst\.cuny\.edu/psc/.*\.pdf)',r.text).group(1)
