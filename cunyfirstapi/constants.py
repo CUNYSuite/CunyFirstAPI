@@ -39,3 +39,8 @@ CUNY_FIRST_LOGOUT_URL = 'https://home.cunyfirst.cuny.edu/psp/cnyepprd/EMPLOYEE/E
 CUNY_FIRST_LOGOUT_2_URL = 'https://home.cunyfirst.cuny.edu/sso/logout?end_url=https://home.cunyfirst.cuny.edu'
 CUNY_FIRST_LOGOUT_3_URL = 'https://ssologin.cuny.edu/oamsso-bin/logout.pl?end_url=https%3A' \
     + '%2F%2Fhome.cunyfirst.cuny.edu'
+CUNY_FIRST_TRANSCRIPT_REQUEST_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE' \
+    + '/HRMS/c/SA_LEARNER_SERVICES.SSS_TSRQST_UNOFF.GBL?Page=SSS_TSRQST_UNOFF&Action=A' \
+    + '&EMPLID=&TargetFrameName=None'
+CUNY_FIRST_MY_ACADEMICS_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS' \
+    + '/c/SA_LEARNER_SERVICES.SSS_MY_ACAD.GBL?Page=SSS_MY_ACAD&Action=U&ExactKeys=Y&TargetFrameName=None'
