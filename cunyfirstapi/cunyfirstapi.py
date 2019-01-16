@@ -103,7 +103,10 @@ class CUNYFirstAPI():
             new_session = requests.Session()
             self._session = PersistentSession(self._username, self._password)
         else:
-            self._session =  new_session.login(new_session._username, new_session._password)
+            self._session =  new_session.login(
+                new_session._username, 
+                new_session._password
+            )
 
     def logout(self):
         try:
