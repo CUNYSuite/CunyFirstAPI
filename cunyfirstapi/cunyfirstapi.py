@@ -18,33 +18,36 @@ __status__ = "Production"
 The Cuny Navigator makes moving around the cunyFirst website
 alot easier.
 '''
-class CUNYFirstAPI():
 
-    
 
-    def __init__(self, new_session = None):
-        if new_session is None:
-            new_session = requests.Session()
+class PersistentSession:
 
-        self._session = new_session
+    def __init__(self, username=None, password=None):
+        self._session  = requests.Session()
+        self._username = username
+        self._password = password
 
-    def restart_session(self):
-        self._session = requests.Session()
-
-    def logout(self):
-        try:
-            self._session.get(constants.CUNY_FIRST_LOGOUT_URL)
-            self._session.get(constants.CUNY_FIRST_LOGOUT_2_URL)
-            self._session.get(constants.CUNY_FIRST_LOGOUT_3_URL)
-            return True
-        except BaseException:
-            return False 
+    # provide everything a session has
+    def __getattr__(self, attr_name):  
+        if not self.is_logged_in():
+            self.login(self._username, self._password)
+        return self._session.__getattribute__(attr_name)
+   
+    def is_logged_in(self):   
+        r = self._session.get(
+            constants.CUNY_FIRST_HOME_URL_TEST,
+            allow_redirects=False)
+        return not r.status_code == 302
 
     def login(self, username, password):
-        self._session.get(constants.CUNY_FIRST_HOME_URL)
+        self._username = username
+        self._password = password
+        new_session = requests.Session()
+        new_session.get(constants.CUNY_FIRST_HOME_URL)
 
         # AUTH LOGIN
-        username = re.sub(r'@login\.cuny\.edu','',username)         # just in case, remove @login stuff
+        # just in case, remove @login stuff
+        username = re.sub(r'@login\.cuny\.edu','',username)  
 
         data = {
             'usernameH': f'{username}@login.cuny.edu',
@@ -53,14 +56,13 @@ class CUNYFirstAPI():
             'submit': ''
         }
 
-        self._session.post(
+        new_session.post(
             url = constants.CUNY_FIRST_AUTH_SUBMIT_URL, 
             data = data
         )
 
         # STUDENT CENTER
-        response = self._session.get(constants.CUNY_FIRST_STUDENT_CENTER_URL)
-
+        response = new_session.get(constants.CUNY_FIRST_STUDENT_CENTER_URL)
         tree = html.fromstring(response.text)
 
         try:
@@ -69,8 +71,7 @@ class CUNYFirstAPI():
             return None
 
         data = {'enc_post_data': encquery}
-
-        response = self._session.post(
+        response = new_session.post(
             url = constants.CUNY_FIRST_LOGIN_URL, 
             data = data
         )
@@ -82,13 +83,40 @@ class CUNYFirstAPI():
             return None
 
         data = {'enc_post_data': encreply}
-        self._session.post(
+        new_session.post(
             url = constants.CUNY_FIRST_LOGIN_2_URL, 
             data=data
         )
-        response = self._session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
-
+        response = new_session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
+        self._session = new_session
         return response
+
+class CUNYFirstAPI():
+
+    def __init__(self, new_session = None):
+        if new_session is None:
+            new_session = requests.Session()
+        self._session = PersistentSession(new_session)
+
+    def restart_session(self):
+        if new_session is None:
+            new_session = requests.Session()
+            self._session = PersistentSession(new_session)
+        else:
+            self._session =  new_session.login(new_session._username, new_session._password)
+
+    def logout(self):
+        try:
+            self._session.get(constants.CUNY_FIRST_LOGOUT_URL)
+            self._session.get(constants.CUNY_FIRST_LOGOUT_2_URL)
+            self._session.get(constants.CUNY_FIRST_LOGOUT_3_URL)
+            return True
+        except BaseException:
+            return False 
+
+    def login(self, username, password):
+        # Pass through to session class
+        self._session.login(username, password)
 
     def to_login(self):
         return self._session.get(constants.CUNY_FIRST_HOME_URL)
