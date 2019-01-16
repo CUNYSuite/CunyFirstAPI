@@ -93,15 +93,15 @@ class PersistentSession:
 
 class CUNYFirstAPI():
 
-    def __init__(self, new_session = None):
-        if new_session is None:
-            new_session = requests.Session()
-        self._session = PersistentSession(new_session)
+    def __init__(self, username=None, password=None):
+        self._username = username
+        self._password = password
+        self._session = PersistentSession(self._username, self._password)
 
     def restart_session(self):
-        if new_session is None:
+        if self._session is None:
             new_session = requests.Session()
-            self._session = PersistentSession(new_session)
+            self._session = PersistentSession(self._username, self._password)
         else:
             self._session =  new_session.login(new_session._username, new_session._password)
 
@@ -114,9 +114,15 @@ class CUNYFirstAPI():
         except BaseException:
             return False 
 
-    def login(self, username, password):
+    def set_password(self, password):
+        self._password = password
+
+    def set_username(self, username):
+        self._username = username
+
+    def login(self):
         # Pass through to session class
-        self._session.login(username, password)
+        self._session.login(self._username, self._password)
 
     def to_login(self):
         return self._session.get(constants.CUNY_FIRST_HOME_URL)
