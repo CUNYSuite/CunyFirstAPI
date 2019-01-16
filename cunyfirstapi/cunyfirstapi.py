@@ -2,7 +2,7 @@
 '''
 Grade Notifier
 File: cunyfirstaapi.py
-Core Maintainers: Ehud Adler, Akiva Sherman, 
+Core Maintainers: Ehud Adler, Akiva Sherman,
 Yehuda Moskovits
 Copyright: Copyright 2019, Ehud Adler
 License: MIT
@@ -126,9 +126,9 @@ class CUNYFirstAPI():
     def get_current_session(self):
         return self._session
 
-    def is_logged_in():
+    def is_logged_in(self):
         return self._session.is_logged_in()
-        
+
     def login(self):
         # Pass through to session class
         self._session.login(self._username, self._password)
