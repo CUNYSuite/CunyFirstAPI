@@ -42,7 +42,12 @@ class PersistentSession:
     # In this method we sign you back in and retrace your steps
     # Allowing for true revival. The session will have exactly
     # the same history and will be in the same location
-    def revive(self):
+    def revive_full(self):
+        self.login(self._username, self._password)        
+        for moment in self._history:
+            self._session.moment
+
+    def revive_to_last(self):
         self.login(self._username, self._password)        
         for moment in self._history:
             self._session.moment
