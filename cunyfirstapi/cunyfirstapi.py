@@ -100,9 +100,9 @@ class CUNYFirstAPI():
 
     def restart_session(self):
         if self._session is None:
-            new_session = requests.Session()
             self._session = PersistentSession(self._username, self._password)
         else:
+            new_session = requests.Session()
             self._session =  new_session.login(new_session._username, new_session._password)
 
     def logout(self):
