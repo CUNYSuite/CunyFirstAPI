@@ -1,6 +1,6 @@
 ###***********************************###
 '''
-Grade Notifier
+CUNYFirstAPI
 File: tests.py
 Author: Ehud Adler
 Core Maintainers: Ehud Adler, Akiva Sherman, 
@@ -13,6 +13,16 @@ License: MIT
 class TestTest(unittest.TestCase):
     def test(self):
         self.assertEqual(true, true)
+=======
+Copyright: Copyright 2019, CUNYSuite
+License: MIT
+'''
+###***********************************###
+import unittest
+
+class TestTest(unittest.TestCase):
+    def test(self):
+        self.assertEqual(True, True)
 
 def run_test():
     unittest.main()
