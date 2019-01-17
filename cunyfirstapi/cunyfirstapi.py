@@ -1,3 +1,14 @@
+###***********************************###
+'''
+Grade Notifier
+File: cunyfirstaapi.py
+Core Maintainers: Ehud Adler, Akiva Sherman,
+Yehuda Moskovits
+Copyright: Copyright 2019, Ehud Adler
+License: MIT
+'''
+###***********************************###
+
 from os import sys, path
 from lxml import html
 from os.path import join, dirname
@@ -5,21 +16,10 @@ import requests
 import re
 from . import constants
 
-
-__author__ = "Ehud Adler"
-__copyright__ = "Copyright 2018, CUNY Suite"
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ehud Adler & Akiva Sherman"
-__email__ = "self@ehudadler.com"
-__status__ = "Production"
-
 '''
 The Cuny Navigator makes moving around the cunyFirst website
 alot easier.
 '''
-
-
 class PersistentSession:
 
     def __init__(self, username=None, password=None):
@@ -39,9 +39,11 @@ class PersistentSession:
             allow_redirects=False)
         return not r.status_code == 302
 
-    def login(self, username, password):
-        self._username = username
-        self._password = password
+    def login(self, username=None, password=None):
+        if username:
+            self._username = username 
+        if password:
+            self._password = password
         new_session = requests.Session()
         new_session.get(constants.CUNY_FIRST_HOME_URL)
 
@@ -99,11 +101,7 @@ class CUNYFirstAPI():
         self._session = PersistentSession(self._username, self._password)
 
     def restart_session(self):
-        if self._session is None:
-            self._session = PersistentSession(self._username, self._password)
-        else:
-            new_session = requests.Session()
-            self._session =  new_session.login(new_session._username, new_session._password)
+        self._session = PersistentSession(self._username, self._password)
 
     def logout(self):
         try:
@@ -119,6 +117,12 @@ class CUNYFirstAPI():
 
     def set_username(self, username):
         self._username = username
+
+    def get_current_session(self):
+        return self._session
+
+    def is_logged_in(self):
+        return self._session.is_logged_in()
 
     def login(self):
         # Pass through to session class
