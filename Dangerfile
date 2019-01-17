@@ -12,7 +12,7 @@ warn("Big PR") if git.lines_of_code > 500
 fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
 fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
-forgot_tests = !git.modified_files.include?("cunyfirstapi/tests/tests.py")
+forgot_tests = !git.modified_files.include?("/cunyfirstapi/tests/tests.py")
 
 if forgot_tests and not declared_trivial
 	warn("It appears that you forgot to add a Unit Test to the test file.\n Please add a test and upload the new version.\n The test file can currently be found at: cunyfirstapi/tests/tests.py")
