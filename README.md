@@ -38,5 +38,8 @@ Okay so you know what we're looking to do. Here's how you can help:
 3. git clone ....... from your fork
 
 #### Installing the package locally for testing
-To install and run this package locally, clone the repository and inside the root directory run `python3 -m pip install --user -e .`
+To install and run this package locally, clone the repository and inside the root directory run `python3 setup.py install --user`
 
+
+### Code of Conduct
+For Code of Conduct please refer to [CODE OF CONDUCT](CodeOfConduct.md)
