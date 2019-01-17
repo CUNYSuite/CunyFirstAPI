@@ -46,7 +46,7 @@ class PersistentSession:
     # the same history and will be in the same location
     def revive(self):
         login(self._username, self._password)        
-        for moment in history:
+        for moment in self._history:
             self._session.moment
 
     def get_history(self):
