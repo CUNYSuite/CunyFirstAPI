@@ -15,7 +15,7 @@ fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
 forgot_tests = !git.modified_files.include?("./cunyfirstapi/tests/tests.py")
 git.modified_files.each do |f|
-	echo f
+	message(f)
 end
 
 if forgot_tests and not declared_trivial
