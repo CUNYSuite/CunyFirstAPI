@@ -9,6 +9,7 @@ Copyright: Copyright 2019, CUNYSuite
 License: MIT
 '''
 ###***********************************###
+import unittest
 
 class TestTest(unittest.TestCase):
     def test(self):
