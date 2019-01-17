@@ -1,3 +1,14 @@
+###***********************************###
+'''
+Grade Notifier
+File: cunyfirstaapi.py
+Core Maintainers: Ehud Adler, Akiva Sherman,
+Yehuda Moskovits
+Copyright: Copyright 2019, Ehud Adler
+License: MIT
+'''
+###***********************************###
+
 from os import sys, path
 from lxml import html
 from os.path import join, dirname
@@ -6,33 +17,41 @@ import re
 from . import constants
 
 
-__author__ = "Ehud Adler"
-__copyright__ = "Copyright 2018, CUNY Suite"
-__license__ = "MIT"
-__version__ = "1.0.0"
-__maintainer__ = "Ehud Adler & Akiva Sherman"
-__email__ = "self@ehudadler.com"
-__status__ = "Production"
 
 '''
 The Cuny Navigator makes moving around the cunyFirst website
 alot easier.
 '''
-
-
 class PersistentSession:
 
     def __init__(self, username=None, password=None):
-        self._session  = requests.Session()
+        self._session = requests.Session()
         self._username = username
         self._password = password
+        self._history = []
 
     # provide everything a session has
     def __getattr__(self, attr_name):  
         if not self.is_logged_in():
             self.login(self._username, self._password)
+        history.append(__getattribute__(attr_name))
         return self._session.__getattribute__(attr_name)
    
+
+    # Revive
+    #
+    # The __getattr__ method keeps a list of all get, post request
+    # In this method we sign you back in and retrace your steps
+    # Allowing for true revival. The session will have exactly
+    # the same history and will be in the same location
+    def revive(self):
+        login(self._username, self._password)        
+        for moment in history:
+            self._session.moment
+
+    def get_history(self):
+        return self._history
+
     def is_logged_in(self):   
         r = self._session.get(
             constants.CUNY_FIRST_HOME_URL_TEST,
@@ -103,7 +122,10 @@ class CUNYFirstAPI():
             new_session = requests.Session()
             self._session = PersistentSession(self._username, self._password)
         else:
-            self._session =  new_session.login(new_session._username, new_session._password)
+            self._session =  new_session.login(
+                new_session._username, 
+                new_session._password
+            )
 
     def logout(self):
         try:
@@ -119,6 +141,12 @@ class CUNYFirstAPI():
 
     def set_username(self, username):
         self._username = username
+
+    def get_current_session(self):
+        return self._session
+
+    def is_logged_in(self):
+        return self._session.is_logged_in()
 
     def login(self):
         # Pass through to session class
