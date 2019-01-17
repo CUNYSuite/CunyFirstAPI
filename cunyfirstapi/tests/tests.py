@@ -9,15 +9,6 @@ Copyright: Copyright 2019, Ehud Adler
 License: MIT
 '''
 ###***********************************###
-
-class TestTest(unittest.TestCase):
-    def test(self):
-        self.assertEqual(true, true)
-=======
-Copyright: Copyright 2019, CUNYSuite
-License: MIT
-'''
-###***********************************###
 import unittest
 
 class TestTest(unittest.TestCase):
