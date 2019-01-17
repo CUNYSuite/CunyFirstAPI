@@ -34,7 +34,7 @@ class PersistentSession:
     def __getattr__(self, attr_name):  
         if not self.is_logged_in():
             self.login(self._username, self._password)
-        history.append(__getattribute__(attr_name))
+        self._history.append(self._session.__getattribute__(attr_name))
         return self._session.__getattribute__(attr_name)
    
 
