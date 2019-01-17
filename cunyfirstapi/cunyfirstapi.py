@@ -56,9 +56,11 @@ class PersistentSession:
             allow_redirects=False)
         return not r.status_code == 302
 
-    def login(self, username, password):
-        self._username = username
-        self._password = password
+    def login(self, username=None, password=None):
+        if username:
+            self._username = username
+        if password:
+            self._password = password
         new_session = requests.Session()
         new_session.get(constants.CUNY_FIRST_HOME_URL)
 
@@ -116,14 +118,7 @@ class CUNYFirstAPI:
         self._session = PersistentSession(self._username, self._password)
 
     def restart_session(self):
-        if self._session is None:
-            new_session = requests.Session()
-            self._session = PersistentSession(self._username, self._password)
-        else:
-            self._session =  new_session.login(
-                new_session._username, 
-                new_session._password
-            )
+        self._session = PersistentSession(self._username, self._password)
 
     def logout(self):
         try:
