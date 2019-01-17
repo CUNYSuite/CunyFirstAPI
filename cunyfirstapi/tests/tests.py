@@ -13,7 +13,7 @@ import unittest
 
 class TestTest(unittest.TestCase):
     def test(self):
-        self.assertEqual(true, true)
+        self.assertEqual(True, True)
 
 def run_test():
     unittest.main()
