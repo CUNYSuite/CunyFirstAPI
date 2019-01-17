@@ -43,7 +43,11 @@ further defined and clarified by project maintainers.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
+<<<<<<< HEAD
 reported by contacting the project team at [cunybot1@gmail.com](mailto:cunybot1@gmail.com) All
+=======
+reported by contacting the project team at cunybot1@gmail.com All
+>>>>>>> a628ccc7a4d08dab2930cd679b3b6dcc96e1efc1
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
