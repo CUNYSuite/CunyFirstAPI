@@ -12,7 +12,7 @@ warn("Big PR") if git.lines_of_code > 500
 fail("fdescribe left in tests") if `grep -r fdescribe specs/ `.length > 1
 fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 
-forgot_tests = !git.modified_files.include?("./cunyfirstapi/tests/tests.py")
+forgot_tests = !git.modified_files.include?("cunyfirstapi/tests/tests.py")
 git.modified_files.each do |f|
 	message(f)
 end
