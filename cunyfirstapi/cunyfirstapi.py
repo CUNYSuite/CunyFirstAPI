@@ -108,7 +108,7 @@ class PersistentSession:
         self._session = new_session
         return response
 
-class CUNYFirstAPI():
+class CUNYFirstAPI:
 
     def __init__(self, username=None, password=None):
         self._username = username
@@ -162,8 +162,11 @@ class CUNYFirstAPI():
         if headers is None:
             headers = self._session.headers
 
-        response = request_method(url=constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL, data=data, headers=headers)
-        
+        response = request_method(
+            url=constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL, 
+            data=data,
+            headers=headers
+        )
         return response
 
     def to_transcript_download(self, college_code):
