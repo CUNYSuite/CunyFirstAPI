@@ -41,7 +41,7 @@ class PersistentSession:
 
     def login(self, username=None, password=None):
         if username:
-            self._username = username 
+            self._username = username
         if password:
             self._password = password
         new_session = requests.Session()
