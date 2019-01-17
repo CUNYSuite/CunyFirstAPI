@@ -5,7 +5,7 @@ File: tests.py
 Author: Ehud Adler
 Core Maintainers: Ehud Adler, Akiva Sherman, 
 Yehuda Moskovits
-Copyright: Copyright 2019, CUNYSuite
+Copyright: Copyright 2019, Ehud Adler
 License: MIT
 '''
 ###***********************************###
