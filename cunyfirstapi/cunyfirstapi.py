@@ -16,8 +16,6 @@ import requests
 import re
 from . import constants
 
-
-
 '''
 The Cuny Navigator makes moving around the cunyFirst website
 alot easier.
@@ -34,9 +32,9 @@ class PersistentSession:
     def __getattr__(self, attr_name):  
         if not self.is_logged_in():
             self.login(self._username, self._password)
+        print(self._session.__getattribute__(attr_name))
         self._history.append(self._session.__getattribute__(attr_name))
         return self._session.__getattribute__(attr_name)
-   
 
     # Revive
     #
@@ -45,7 +43,7 @@ class PersistentSession:
     # Allowing for true revival. The session will have exactly
     # the same history and will be in the same location
     def revive(self):
-        login(self._username, self._password)        
+        self.login(self._username, self._password)        
         for moment in self._history:
             self._session.moment
 
