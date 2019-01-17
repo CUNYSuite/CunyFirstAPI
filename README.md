@@ -42,4 +42,4 @@ To install and run this package locally, clone the repository and inside the roo
 
 
 ### Code of Conduct
-For Code of Conduct please refer to [CODE OF CONDUCT](CodeOfConduct.md)
+Please refer to [CODE OF CONDUCT](CodeOfConduct.md)
