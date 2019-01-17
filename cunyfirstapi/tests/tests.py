@@ -1,11 +1,11 @@
 ###***********************************###
 '''
-Grade Notifier
+CUNYFirstAPI
 File: tests.py
 Author: Ehud Adler
 Core Maintainers: Ehud Adler, Akiva Sherman, 
 Yehuda Moskovits
-Copyright: Copyright 2019, Ehud Adler
+Copyright: Copyright 2019, CUNYSuite
 License: MIT
 '''
 ###***********************************###
