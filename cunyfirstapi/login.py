@@ -11,8 +11,7 @@ License: MIT
 ###***********************************###
 import requests
 import re
-from lxml import html, etree
-from os.path import join
+from lxml import html
 from . import constants
 
 def is_logged_in(session):

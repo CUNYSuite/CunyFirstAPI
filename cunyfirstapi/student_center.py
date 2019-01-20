@@ -13,7 +13,7 @@ from . import constants
 from .actions_locations import ActionObject, Location
 
 class Student_Center(Location):
-    def move(self):
+    def move(self, data=None):
         if data is None:
             request_method = self._session.get
         else:

@@ -89,7 +89,7 @@ class Transcript_Page_Action(ActionObject):
         data['ICSID'] = tree.xpath('//*[@id="ICSID"]/@value')[0]
         data['ICStateNum'] = '5'
         data['ICAction'] = 'SA_REQUEST_HDR_INSTITUTION'
-        data['SA_REQUEST_HDR_INSTITUTION'] = self._college_code
+        data['SA_REQUEST_HDR_INSTITUTION'] = college_code
         data['ICYPos'] ='115'
 
         # tell it we picked that college
