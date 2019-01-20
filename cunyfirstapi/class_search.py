@@ -201,10 +201,10 @@ class Class_Search_Action(ActionObject):
 
             for row in rows:
                 row_info = {
-                	'subject' : _subject,
-                	'course_number' : _course_number,
-                	'title' : _title,
-                	'description' : ''.join(row.xpath('../../../../following-sibling::tr//span[contains(@id,"DERIVED_CLSRCH_DESCRLONG$")]/text()')),
+                    'subject' : _subject,
+                    'course_number' : _course_number,
+                    'title' : _title,
+                    'description' : ''.join(row.xpath('../../../../following-sibling::tr//span[contains(@id,"DERIVED_CLSRCH_DESCRLONG$")]/text()')),
                     'class_number' : ''.join(row.xpath('.//a[contains(@id,"MTG_CLASS_NBR$")]/text()')).strip(),
                     'section' : ''.join(row.xpath('.//a[contains(@id,"MTG_CLASSNAME$")]/text()')).strip(),
                     'days_and_times' : ''.join(row.xpath('.//span[contains(@id,"MTG_DAYTIME$")]/text()')).strip(),
