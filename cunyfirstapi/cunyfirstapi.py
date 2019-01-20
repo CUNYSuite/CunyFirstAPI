@@ -53,10 +53,13 @@ class PersistentSession:
     def get_history(self):
         return self._history
 
-    def is_logged_in(self):   
-        r = self._session.get(
-            constants.CUNY_FIRST_HOME_URL_TEST,
-            allow_redirects=False)
+    def is_logged_in(self):
+        try:
+            r = self._session.get(
+                constants.CUNY_FIRST_HOME_URL_TEST,
+                allow_redirects=False)
+        except TimeoutError:
+            return False
         return not r.status_code == 302
 
     def login(self, username=None, password=None):        
