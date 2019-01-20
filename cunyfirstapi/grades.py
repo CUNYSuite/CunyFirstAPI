@@ -83,14 +83,14 @@ class Student_Grades_Action(ActionObject):
                         data.append(column.get_text())
                     column_marker += 1
                 if len(data) is not 0:
-                    new_class = Class(
-                        data[0].strip(), 
-                        data[1].strip(),
-                        data[2].strip(), 
-                        data[3].strip(),
-                        data[4].strip(), 
-                        data[5].strip()
-                    )
+                    new_class = {
+                        name: data[0].strip(),
+                        description: data[1].strip(),
+                        units: data[2].strip(),
+                        grading: data[3].strip(),
+                        grade: data[4].strip(),
+                        gradepts: data[5].strip()
+                    }
                     result.append(new_class)
 
             gpa_stats = soup.findAll(
@@ -104,5 +104,4 @@ class Student_Grades_Action(ActionObject):
 
             term_gpa = float(term_gpa_text)
             cumulative_gpa = float(last_row.find_all('td')[-1].get_text())
-            refresh_result = RefreshResult(result, GPA(term_gpa, cumulative_gpa))
-            return grades
+            return (result, term_gpa, cumulative_gpa)
