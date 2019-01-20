@@ -1,7 +1,7 @@
 ###***********************************###
 '''
 CUNYFirstAPI
-File: grades.py
+File: class_search.py
 Author: Eric Akiva Sherman
 Core Maintainers: Ehud Adler, Akiva Sherman,
 Yehuda Moskovits
