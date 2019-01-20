@@ -1,4 +1,35 @@
 
+# College names and codes pulled from the CunyFirst website
+college_codes = {
+    'BAR01': 'Baruch College',
+    'BMC01': 'Borough of Manhattan CC',
+    'BCC01': 'Bronx CC',
+    'BKL01': 'Brooklyn College',
+    'CTY01': 'City College',
+    'CSI01': 'College of Staten Island',
+    'GRD01': 'Graduate Center',
+    'NCC01': 'Guttman CC',
+    'HOS01': 'Hostos CC',
+    'HTR01': 'Hunter College',
+    'JJC01': 'John Jay College',
+    'KCC01': 'Kingsborough CC',
+    'LAG01': 'LaGuardia CC',
+    'LEH01': 'Lehman College',
+    'MHC01': 'Macaulay Honors College',
+    'MEC01': 'Medgar Evers College',
+    'NYT01': 'NYC College of Technology',
+    'QNS01': 'Queens College',
+    'QCC01': 'Queensborough CC',
+    'SOJ01': 'School of Journalism',
+    'SLU01': 'School of Labor&Urban Studies',
+    'LAW01': 'School of Law',
+    'MED01': 'School of Medicine',
+    'SPS01': 'School of Professional Studies',
+    'SPH01': 'School of Public Health',
+    'UAPC1': 'University Processing Center',
+    'YRK01': 'York College'
+}
+
 CUNY_FIRST_HOME_URL = "https://home.cunyfirst.cuny.edu"
 CUNY_FIRST_AUTH_SUBMIT_URL = "https://ssologin.cuny.edu/oam/server/auth_cred_submit"
 CUNY_FIRST_STUDENT_CENTER_URL = "https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE" \
