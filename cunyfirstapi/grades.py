@@ -20,7 +20,6 @@ from . import constants
 from .helper import get_semester
 
 class Student_Grades(Location):
-
     def move(self):
         self._session.get(constants.CUNY_FIRST_GRADES_URL)
         payload = {'ICACTION': 'DERIVED_SSS_SCT_SSS_TERM_LINK'}
@@ -45,11 +44,11 @@ class Student_Grades(Location):
                 url = constants.CUNY_FIRST_GRADES_URL, 
                 data=payload
             )
-            return Student_Grades_Action()
+            return self.action()
         except TimeoutError:
             return None
 
-    def request(self)
+    def action(self)
         return Student_Grade_Request()
         
 

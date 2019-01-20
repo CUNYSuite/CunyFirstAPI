@@ -9,9 +9,7 @@ Copyright: Copyright 2019, Ehud Adler
 License: MIT
 '''
 ###***********************************###
-from os import sys, path
 from lxml import html
-from bs4 import BeautifulSoup
 from lxml import etree
 from os.path import join, dirname
 import requests
@@ -20,7 +18,6 @@ from . import constants
 from .helper import get_semester
 
 class Transcript_Page(Location):
-
     def move(self):
         data = {}                              
         url = constants.CUNY_FIRST_TRANSCRIPT_REQUEST_URL
@@ -41,7 +38,7 @@ class Transcript_Page(Location):
         data['ICBcDomData'] = ''
         data['DERIVED_SSS_SCL_SSS_MORE_ACADEMICS'] = '9999'
         data['DERIVED_SSS_SCL_SSS_MORE_FINANCES'] = '9999'
-        data['CU_SF_SS_INS_WK_BUSINESS_UNIT'] = college_code
+        data['CU_SF_SS_INS_WK_BUSINESS_UNIT'] = self._college_code
         data['DERIVED_SSS_SCL_SSS_MORE_PROFILE'] = '9999'
 
         # set url to student center menu
@@ -61,52 +58,57 @@ class Transcript_Page(Location):
         response = self._session.post(url, data=data)
         url = constants.CUNY_FIRST_TRANSCRIPT_REQUEST_URL
         response = self._session.get(url) 
-        return self.request()
+        return self.action()
 
-    def request(self)
+    def action(self)
         return Transcript_Page_Action(self._session)
         
 
 class Transcript_Page_Action(ActionObject):
 
-    def __init__(self, self._session):
-        self._self._session = self._session
+    def __init__(self, session):
+        self._session = session
 
     def location(self):
         return Transcript_Page()
 
-    def download(self, college_code):
+    def download(self, alt_college_code=None):
         if data is None:
             data = {'ICElementNum': '0'}
 
+        college_code = self._college_code
+        
+        if alt_college_code:
+            college_code = alt_college_code
+
         url = constants.CUNY_FIRST_TRANSCRIPT_REQUEST_URL
-        r = self._self._session.get(url)
+        r = self._session.get(url)
         tree = html.fromstring(r.text)
 
         data['ICAJAX'] = '1'
         data['ICSID'] = tree.xpath('//*[@id="ICSID"]/@value')[0]
         data['ICStateNum'] = '5'
         data['ICAction'] = 'SA_REQUEST_HDR_INSTITUTION'
-        data['SA_REQUEST_HDR_INSTITUTION'] = college_code
+        data['SA_REQUEST_HDR_INSTITUTION'] = self._college_code
         data['ICYPos'] ='115'
 
         # tell it we picked that college
-        r = self._self._session.post(url, data=data)
+        r = self._session.post(url, data=data)
 
         # tell it we selected "Student Unofficial Transcript"
         data['ICStateNum'] = '6'
-        r = self._self._session.post(url, data=data)
+        r = self._session.post(url, data=data)
 
         # submit our final request to view report
         data['ICStateNum'] = '7'
         data['ICAction'] = 'GO'
         data['DERIVED_SSTSRPT_TSCRPT_TYPE3'] = 'STDNT'
 
-        r = self._self._session.post(url, data=data)
+        r = self._session.post(url, data=data)
 
         # the response contains the url of the transcript. extract with regex
         pdfurl = re.search(r'window.open\(\'(https://hrsa\.cunyfirst\.cuny\.edu/psc/.*\.pdf)',r.text).group(1)
 
         # get the resource at the extracted url, which is the pdf of the transcript
-        r = self._self._session.get(pdfurl)
+        r = self._session.get(pdfurl)
         return r

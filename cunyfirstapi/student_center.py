@@ -9,18 +9,9 @@ Copyright: Copyright 2019, Ehud Adler
 License: MIT
 '''
 ###***********************************###
-from os import sys, path
-from lxml import html
-from bs4 import BeautifulSoup
-from lxml import etree
-from os.path import join, dirname
-import requests
-import re
 from . import constants
-from .helper import get_semester
 
 class Student_Center(Location):
-
     def move(self):
         if data is None:
             request_method = self._session.get
@@ -35,9 +26,9 @@ class Student_Center(Location):
             data=data, 
             headers=headers
         )
-        return self.request()
+        return self.action()
 
-    def request(self)
+    def action(self)
         return Student_Center_Action()
         
 

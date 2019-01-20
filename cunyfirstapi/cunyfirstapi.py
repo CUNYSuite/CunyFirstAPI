@@ -24,10 +24,12 @@ from .transcript import Transcript_Page, Transcript_Page_Action
 
 class CUNYFirstAPI():
 
-    def __init__(self, username=None, password=None):
+    def __init__(self, username=None, password=None, college_code="QNS01"):
         self._username = username
         self._password = password
         self._session = requests.Session()
+        self._college_code = college_code
+        self._location_parser = Locations(self._session, self._college_code)
 
     def restart_session(self):
         self._session = requests.Session()
@@ -44,11 +46,13 @@ class CUNYFirstAPI():
     def is_logged_in(self):
         cuny_login.is_logged_in(session)
 
-    def login(self, username=None, password=None):        
+    def login(self, username=None, password=None, college_code=None):        
         if username:
             self._username = username
         if password:
             self._password = password
+        if college_code
+             self._college_code = college_code
 
         cuny_login.login(
             self._username, 
@@ -56,8 +60,8 @@ class CUNYFirstAPI():
             self._session
         )
 
-    def move_to(loc):
-        location = Locations.get_location_object(loc)
+    def move_to(self, loc):
+        location = self._location_parser.get_location_object(loc)
         return location.move().request()
 
 
