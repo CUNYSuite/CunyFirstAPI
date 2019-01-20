@@ -33,8 +33,8 @@ class PersistentSession:
 
     # provide everything a session has
     def __getattr__(self, attr_name):  
-        if not self.is_logged_in():
-            self.login(self._username, self._password)
+        # if not self.is_logged_in():
+        #     self.login(self._username, self._password)
         history.append(__getattribute__(attr_name))
         return self._session.__getattribute__(attr_name)
    
@@ -59,14 +59,14 @@ class PersistentSession:
             allow_redirects=False)
         return not r.status_code == 302
 
-    def login(self, username=None, password=None):
+    def login(self, username=None, password=None):        
         if username:
             self._username = username
         if password:
             self._password = password
         new_session = requests.Session()
-        new_session.get(constants.CUNY_FIRST_HOME_URL)
-
+        res = new_session.get(constants.CUNY_FIRST_HOME_URL)
+        print(res)
         # AUTH LOGIN
         # just in case, remove @login stuff
         username = re.sub(r'@login\.cuny\.edu','',username)  
