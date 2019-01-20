@@ -10,6 +10,7 @@ License: MIT
 '''
 ###***********************************###
 from . import constants
+from .actions_locations import ActionObject, Location
 
 class Student_Center(Location):
     def move(self):
@@ -26,9 +27,9 @@ class Student_Center(Location):
             data=data, 
             headers=headers
         )
-        return self.action()
+        return self
 
-    def action(self)
+    def action(self):
         return Student_Center_Action()
         
 

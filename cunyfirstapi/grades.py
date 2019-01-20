@@ -10,19 +10,19 @@ License: MIT
 '''
 ###***********************************###
 from os import sys, path
-from lxml import html
+from lxml import html, etree
 from bs4 import BeautifulSoup
 from lxml import etree
-from os.path import join, dirname
-import requests
-import re
+from os.path import join
 from . import constants
 from .helper import get_semester
+from .actions_locations import ActionObject, Location
 
 class Student_Grades(Location):
     def move(self):
         self._session.get(constants.CUNY_FIRST_GRADES_URL)
         payload = {'ICACTION': 'DERIVED_SSS_SCT_SSS_TERM_LINK'}
+        term = get_semester()
         try:
             response = self._session.post(
                 url = constants.CUNY_FIRST_GRADES_URL, 
@@ -40,25 +40,29 @@ class Student_Grades(Location):
                 payload_key : payload_value,
                 'ICACTION' : 'DERIVED_SSS_SCT_SSR_PB_GO'
             }
-            response = self._session.post(
-                url = constants.CUNY_FIRST_GRADES_URL, 
+            self._response = self._session.post(
+                url=constants.CUNY_FIRST_GRADES_URL, 
                 data=payload
             )
-            return self.action()
+            return self
         except TimeoutError:
             return None
 
-    def action(self)
-        return Student_Grade_Request()
+    def action(self):
+        return Student_Grades_Action(self._session, self._response)
         
 
 class Student_Grades_Action(ActionObject):
+
+    def __init__(self, session, response):
+        self._session = session
+        self._response = response
+
     def location(self):
         return Student_Center()
 
-    def grades(self, self._session):
-
-        tree = BeautifulSoup(response.text, 'lxml')
+    def grades(self):
+        tree = BeautifulSoup(self._response.text, 'lxml')
         good_html = tree.prettify()
         soup = BeautifulSoup(good_html, 'html.parser')
         result = []
@@ -84,12 +88,12 @@ class Student_Grades_Action(ActionObject):
                     column_marker += 1
                 if len(data) is not 0:
                     new_class = {
-                        name: data[0].strip(),
-                        description: data[1].strip(),
-                        units: data[2].strip(),
-                        grading: data[3].strip(),
-                        grade: data[4].strip(),
-                        gradepts: data[5].strip()
+                        'name': data[0].strip(),
+                        'description': data[1].strip(),
+                        'units': data[2].strip(),
+                        'grading': data[3].strip(),
+                        'grade': data[4].strip(),
+                        'gradepts': data[5].strip()
                     }
                     result.append(new_class)
 
@@ -104,4 +108,4 @@ class Student_Grades_Action(ActionObject):
 
             term_gpa = float(term_gpa_text)
             cumulative_gpa = float(last_row.find_all('td')[-1].get_text())
-            return (result, term_gpa, cumulative_gpa)
+            return { 'results': result, 'term_gpa': term_gpa, 'cumulative_gpa': cumulative_gpa }

@@ -9,8 +9,18 @@ Copyright: Copyright 2019, Ehud Adler
 License: MIT
 '''
 ###***********************************###
+import requests
+import re
+from lxml import html, etree
+from os.path import join
+from . import constants
 
-def is_logged_in(self, session):
+def is_logged_in(session):
+
+    # Sanity check, make sure session is not None
+    if not session:
+        return False
+
     try:
         r = session.get(
             constants.CUNY_FIRST_HOME_URL_TEST,
@@ -19,7 +29,7 @@ def is_logged_in(self, session):
         return False
     return not r.status_code == 302
 
-def login(self, username, password):  
+def login(username, password):  
     new_session = requests.Session()
     new_session.get(constants.CUNY_FIRST_HOME_URL)
     # AUTH LOGIN
@@ -67,7 +77,7 @@ def login(self, username, password):
     response = new_session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
     return new_session
 
-    def logout(self, session):
+    def logout(session):
         try:
             session.get(constants.CUNY_FIRST_LOGOUT_URL)
             session.get(constants.CUNY_FIRST_LOGOUT_2_URL)

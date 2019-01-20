@@ -12,7 +12,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="cunyfirstapi",
-    version="0.0.12",
+    version="0.0.13",
     author="Ehud Adler",
     author_email="ehud.adler62@qmail.cuny.edu",
     description="A simple CUNYFIRST python API",

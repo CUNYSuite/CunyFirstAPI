@@ -9,13 +9,12 @@ Copyright: Copyright 2019, Ehud Adler
 License: MIT
 '''
 ###***********************************###
-from lxml import html
-from lxml import etree
-from os.path import join, dirname
-import requests
+from lxml import html, etree
+from os.path import join
 import re
 from . import constants
 from .helper import get_semester
+from .actions_locations import ActionObject, Location
 
 class Transcript_Page(Location):
     def move(self):
@@ -58,16 +57,17 @@ class Transcript_Page(Location):
         response = self._session.post(url, data=data)
         url = constants.CUNY_FIRST_TRANSCRIPT_REQUEST_URL
         response = self._session.get(url) 
-        return self.action()
+        return self
 
-    def action(self)
-        return Transcript_Page_Action(self._session)
+    def action(self):
+        return Transcript_Page_Action(self._session, self._college_code)
         
 
 class Transcript_Page_Action(ActionObject):
 
-    def __init__(self, session):
+    def __init__(self, session, college_code):
         self._session = session
+        self._college_code = college_code
 
     def location(self):
         return Transcript_Page()
@@ -77,7 +77,7 @@ class Transcript_Page_Action(ActionObject):
             data = {'ICElementNum': '0'}
 
         college_code = self._college_code
-        
+
         if alt_college_code:
             college_code = alt_college_code
 
