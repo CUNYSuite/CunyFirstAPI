@@ -17,8 +17,9 @@ from lxml import etree
 from os.path import join, dirname
 from . import login as cuny_login
 from . import constants
+from .student_center import Student_Center, Student_Center_Action
 from .grades import Student_Grades, Student_Grades_Action
-from .actions_locations import ActionObject, Location
+from .actions_locations import ActionObject, Location, Locations
 from .transcript import Transcript_Page, Transcript_Page_Action
 
 class CUNYFirstAPI():
@@ -55,9 +56,9 @@ class CUNYFirstAPI():
             self._session
         )
 
-    def move_to(location):
-        location.move(self._session)
-        return location.request()
+    def move_to(loc):
+        location = Locations.get_location_object(loc)
+        return location.move().request()
 
 
 
