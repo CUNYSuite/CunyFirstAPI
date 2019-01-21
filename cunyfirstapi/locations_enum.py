@@ -43,7 +43,7 @@ class Locations():
                 Locations.student_grades:       Student_Grades(self._session, self._college_code),
                 Locations.transcript:           Transcript_Page(self._session, self._college_code),
                 Locations.class_search:         Class_Search(self._session, self._college_code)
-            } [location]
+            }[location]
 
         except KeyError:
             return None

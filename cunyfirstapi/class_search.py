@@ -96,12 +96,9 @@ class Class_Search_Action(ActionObject):
         course_component='', campus='', _location='', instructor_last_name_match='B', instructor_last_name='', parsed=True):
         
         if days_of_week is None:
-            days_of_week = {}
+            days_of_week = []
 
-        for day in days_of_week:
-            if day != day.lower():
-                days_of_week[day.lower()] = days_of_week[day]
-                del days_of_week[day]
+        days_of_week = set(map(lambda x: x.lower(), days_of_week))
 
         headers = {
             'Origin': 'https://hrsa.cunyfirst.cuny.edu',
@@ -154,13 +151,13 @@ class Class_Search_Action(ActionObject):
             'SSR_CLSRCH_WRK_SSR_END_TIME_OPR$8': meeting_end_time_match,
             'SSR_CLSRCH_WRK_MEETING_TIME_END$8': meeting_end_time,
             'SSR_CLSRCH_WRK_INCLUDE_CLASS_DAYS$9': days_of_week_match,
-            'SSR_CLSRCH_WRK_MON$chk$9': '' if 'monday' not in days_of_week else 'Y' if days_of_week['monday'] else 'N',
-            'SSR_CLSRCH_WRK_TUES$chk$9': '' if 'tuesday' not in days_of_week else 'Y' if days_of_week['tuesday'] else 'N',
-            'SSR_CLSRCH_WRK_WED$chk$9': '' if 'wednesday' not in days_of_week else 'Y' if days_of_week['wednesday'] else 'N',
-            'SSR_CLSRCH_WRK_THURS$chk$9': '' if 'thursday' not in days_of_week else 'Y' if days_of_week['thursday'] else 'N',
-            'SSR_CLSRCH_WRK_FRI$chk$9': '' if 'friday' not in days_of_week else 'Y' if days_of_week['friday'] else 'N',
-            'SSR_CLSRCH_WRK_SAT$chk$9': '' if 'saturday' not in days_of_week else 'Y' if days_of_week['saturday'] else 'N',
-            'SSR_CLSRCH_WRK_SUN$chk$9': '' if 'sunday' not in days_of_week else 'Y' if days_of_week['sunday'] else 'N',
+            'SSR_CLSRCH_WRK_MON$chk$9': '' if 'monday' not in days_of_week else 'Y',
+            'SSR_CLSRCH_WRK_TUES$chk$9': '' if 'tuesday' not in days_of_week else 'Y',
+            'SSR_CLSRCH_WRK_WED$chk$9': '' if 'wednesday' not in days_of_week else 'Y',
+            'SSR_CLSRCH_WRK_THURS$chk$9': '' if 'thursday' not in days_of_week else 'Y',
+            'SSR_CLSRCH_WRK_FRI$chk$9': '' if 'friday' not in days_of_week else 'Y',
+            'SSR_CLSRCH_WRK_SAT$chk$9': '' if 'saturday' not in days_of_week else 'Y',
+            'SSR_CLSRCH_WRK_SUN$chk$9': '' if 'sunday' not in days_of_week else 'Y',
             'SSR_CLSRCH_WRK_CLASS_NBR$10': class_number,
             'SSR_CLSRCH_WRK_DESCR$11': course_keyword,
             'SSR_CLSRCH_WRK_SSR_UNITS_MIN_OPR$12': minimum_units_match,
