@@ -186,8 +186,19 @@ class Class_Search_Action(ActionObject):
         if not parsed:
             return response.text
 
-        tree = html.fromstring(re.search(r'(<table class=\'PSPAGECONTAINER\'[\s\S]*</table>)\n<DIV class=',response.text).group(1))
+        
         result = []
+        if re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text):
+        	#print(re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text).group(0))
+        	tree = html.fromstring(re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text).group(0))
+        	warning = ''.join(tree.xpath('//span[@class="SSSMSGWARNINGTEXT"]/text()'))
+        	return {
+        		'results': result,
+        		'success' : False,
+        		'reason' : warning
+        	}
+
+        tree = html.fromstring(re.search(r'(<table class=\'PSPAGECONTAINER\'[\s\S]*</table>)\n<DIV class=',response.text).group(1))
         course_divs = tree.xpath('//div[contains(@id,"win0divSSR_CLSRSLT_WRK_GROUPBOX2") and not(contains(@id,"GP"))]')
 
         for div in course_divs:
@@ -219,5 +230,6 @@ class Class_Search_Action(ActionObject):
                 #pprint(row_info)
                 result.append(row_info)
 
-        return result
+        return {'results': result,
+                'success': True}
 
