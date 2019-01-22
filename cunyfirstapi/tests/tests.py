@@ -10,10 +10,23 @@ License: MIT
 '''
 ###***********************************###
 import unittest
+from ..locations_enum import Location
+from ..cunyfirstapi import CUNYFirstAPI
 
 class TestTest(unittest.TestCase):
     def test(self):
         self.assertEqual(True, True)
+
+
+class ClassSearchTest(unittest.TestCase):
+    def test(self, username, password):
+        api = CUNYFirstAPI(username, password)
+        search_page = api.move_to(Location.class_search)
+        results = search_page.submit_search(institution='QNS01', term='1192', \
+            subject = 'CSCI', course_number='111')
+        self.assertTrue(len(results['results']) > 0)
+        
+
 
 def run_test():
     unittest.main()
