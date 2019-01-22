@@ -28,7 +28,7 @@ class Class_Search(Location):
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
-            'Referer': 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_STUDENT_CENTER.GBL?FolderPath=PORTAL_ROOT_OBJECT.HC_SSS_STUDENT_CENTER&IsFolder=false&IgnoreParamTempl=FolderPath%2cIsFolder&PortalActualURL=https%3a%2f%2fhrsa.cunyfirst.cuny.edu%2fpsc%2fcnyhcprd%2fEMPLOYEE%2fHRMS%2fc%2fSA_LEARNER_SERVICES.SSS_STUDENT_CENTER.GBL&PortalContentURL=https%3a%2f%2fhrsa.cunyfirst.cuny.edu%2fpsc%2fcnyhcprd%2fEMPLOYEE%2fHRMS%2fc%2fSA_LEARNER_SERVICES.SSS_STUDENT_CENTER.GBL&PortalContentProvider=HRMS&PortalCRefLabel=Student%20Center&PortalRegistryName=EMPLOYEE&PortalServletURI=https%3a%2f%2fhome.cunyfirst.cuny.edu%2fpsp%2fcnyepprd%2f&PortalURI=https%3a%2f%2fhome.cunyfirst.cuny.edu%2fpsc%2fcnyepprd%2f&PortalHostNode=EMPL&NoCrumbs=yes&PortalKeyStruct=yes',
+            'Referer': f'{constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL}',
             'Connection': 'keep-alive',
         }
         payload = { 'ICAJAX': '1',
@@ -49,7 +49,7 @@ class Class_Search(Location):
                       'ICResubmit': '0',
                       'ICSID': self._session.icsid,
                       'ICActionPrompt': 'false',
-                      'ICBcDomData': 'C~HC_SSS_STUDENT_CENTER~EMPLOYEE~HRMS~SA_LEARNER_SERVICES.SSS_STUDENT_CENTER.GBL~UnknownValue~Student Center~UnknownValue~UnknownValue~https://home.cunyfirst.cuny.edu/psp/cnyepprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSS_STUDENT_CENTER.GBL~UnknownValue',
+                      'ICBcDomData': '',
                       'ICFind': '',
                       'ICAddCount': '',
                       'ICAPPCLSDATA': '',
@@ -86,19 +86,23 @@ class Class_Search_Action(ActionObject):
 
 
     def submit_search(self, institution, term, course_number, 
-                    subject='', course_number_match='E', 
-                    course_career='', course_attribute='', 
-                    course_attribute_value='', requirement_designation='',
-                    open_classes_only=True, session='', 
-                    mode_of_instruction='', meeting_start_time_match='GE', 
-                    meeting_start_time='', meeting_end_time_match='LE', 
-                    meeting_end_time='', days_of_week_match='', 
-                    days_of_week=None, class_number='', course_keyword='', 
-                    minimum_units_match='GE', minimum_units='', 
-                    maximum_units_match='LE', maximum_units='', 
-                    course_component='', campus='', _location='', 
-                    instructor_last_name_match='B', instructor_last_name='', 
-                    parsed=True):
+                        subject='', course_number_match='E', 
+                        course_career='', course_attribute='', 
+                        course_attribute_value='', 
+                        requirement_designation='',
+                        open_classes_only=True, session='', 
+                        mode_of_instruction='', 
+                        meeting_start_time_match='GE',
+                        meeting_start_time='', 
+                        meeting_end_time_match='LE',
+                        meeting_end_time='', days_of_week_match='', 
+                        days_of_week=None, class_number='', 
+                        course_keyword='',
+                        minimum_units_match='GE', minimum_units='', 
+                        maximum_units_match='LE', maximum_units='', 
+                        course_component='', campus='', _location='', 
+                        instructor_last_name_match='B', 
+                        instructor_last_name='', parsed=True):
         
         if days_of_week is None:
             days_of_week = []
@@ -112,7 +116,7 @@ class Class_Search_Action(ActionObject):
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
-            'Referer': 'Referer: https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.CLASS_SEARCH.GBL?Page=SSR_CLSRCH_ENTRY&Action=U&ExactKeys=Y&TargetFrameName=None',
+            'Referer': f'{constants.CUNY_FIRST_CLASS_SEARCH_URL}',
             'Connection': 'keep-alive',
         }    
         payload = {
