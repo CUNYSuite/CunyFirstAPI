@@ -85,14 +85,20 @@ class Class_Search_Action(ActionObject):
         return self._location #Class_Search()
 
 
-    def submit_search(self, institution, term, course_number, subject='', \
-        course_number_match='E', course_career='', course_attribute='', \
-        course_attribute_value='', requirement_designation='', open_classes_only=True, \
-        session='', mode_of_instruction='', meeting_start_time_match='GE', \
-        meeting_start_time='', meeting_end_time_match='LE', meeting_end_time='', \
-        days_of_week_match='', days_of_week=None, class_number='', course_keyword='', \
-        minimum_units_match='GE', minimum_units='', maximum_units_match='LE', maximum_units='', \
-        course_component='', campus='', _location='', instructor_last_name_match='B', instructor_last_name='', parsed=True):
+    def submit_search(self, institution, term, course_number, 
+                    subject='', course_number_match='E', 
+                    course_career='', course_attribute='', 
+                    course_attribute_value='', requirement_designation='',
+                    open_classes_only=True, session='', 
+                    mode_of_instruction='', meeting_start_time_match='GE', 
+                    meeting_start_time='', meeting_end_time_match='LE', 
+                    meeting_end_time='', days_of_week_match='', 
+                    days_of_week=None, class_number='', course_keyword='', 
+                    minimum_units_match='GE', minimum_units='', 
+                    maximum_units_match='LE', maximum_units='', 
+                    course_component='', campus='', _location='', 
+                    instructor_last_name_match='B', instructor_last_name='', 
+                    parsed=True):
         
         if days_of_week is None:
             days_of_week = []
@@ -185,14 +191,14 @@ class Class_Search_Action(ActionObject):
         
         result = []
         if re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text):
-        	#print(re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text).group(0))
-        	tree = html.fromstring(re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text).group(0))
-        	warning = ''.join(tree.xpath('//span[@class="SSSMSGWARNINGTEXT"]/text()'))
-        	return {
-        		'results': result,
-        		'success' : False,
-        		'reason' : warning
-        	}
+            #print(re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text).group(0))
+            tree = html.fromstring(re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text).group(0))
+            warning = ''.join(tree.xpath('//span[@class="SSSMSGWARNINGTEXT"]/text()'))
+            return {
+                'results': result,
+                'success' : False,
+                'reason' : warning
+            }
 
         tree = html.fromstring(re.search(r'(<table class=\'PSPAGECONTAINER\'[\s\S]*</table>)\n<DIV class=',response.text).group(1))
         course_divs = tree.xpath('//div[contains(@id,"win0divSSR_CLSRSLT_WRK_GROUPBOX2") and not(contains(@id,"GP"))]')
@@ -226,7 +232,7 @@ class Class_Search_Action(ActionObject):
                 #pprint(row_info)
                 result.append(row_info)
         results = {
-        	'results': result,
-        	'success': True
+            'results': result,
+            'success': True
         }
         return results
