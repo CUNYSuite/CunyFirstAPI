@@ -75,13 +75,13 @@ class Transcript_Page_Action(ActionObject):
         if data is None:
             data = {'ICElementNum': '0'}
 
-        college_code = self._location._college_code
+        college_code = self.location()._college_code
 
         if alt_college_code:
             college_code = alt_college_code
 
         url = constants.CUNY_FIRST_TRANSCRIPT_REQUEST_URL
-        r = self._location_session.get(url)
+        r = self.location()._session.get(url)
         tree = html.fromstring(r.text)
 
         data['ICAJAX'] = '1'
@@ -92,22 +92,22 @@ class Transcript_Page_Action(ActionObject):
         data['ICYPos'] ='115'
 
         # tell it we picked that college
-        r = self._location._session.post(url, data=data)
+        r = self.location()_session.post(url, data=data)
 
         # tell it we selected "Student Unofficial Transcript"
         data['ICStateNum'] = '6'
-        r = self._location._session.post(url, data=data)
+        r = self.location()._session.post(url, data=data)
 
         # submit our final request to view report
         data['ICStateNum'] = '7'
         data['ICAction'] = 'GO'
         data['DERIVED_SSTSRPT_TSCRPT_TYPE3'] = 'STDNT'
 
-        r = self._location._session.post(url, data=data)
+        r = self.location()._session.post(url, data=data)
 
         # the response contains the url of the transcript. extract with regex
         pdfurl = re.search(r'window.open\(\'(https://hrsa\.cunyfirst\.cuny\.edu/psc/.*\.pdf)',r.text).group(1)
 
         # get the resource at the extracted url, which is the pdf of the transcript
-        r = self._location._session.get(pdfurl)
+        r = self.location()._session.get(pdfurl)
         return r

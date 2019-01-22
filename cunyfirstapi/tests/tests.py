@@ -38,15 +38,15 @@ def run_test():
     unittest.main()
 
 def main():
-	global username
-	global password
-	parser = argparse.ArgumentParser()
-	parser.add_argument('--username')
-	parser.add_argument('--password')
+    global username
+    global password
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--username')
+    parser.add_argument('--password')
 
-	args = parser.parse_args
-	username = args.username
-	password = args.password
+    args = parser.parse_args
+    username = args.username
+    password = args.password
 
 
     run_test()

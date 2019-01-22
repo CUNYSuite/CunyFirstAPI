@@ -225,7 +225,8 @@ class Class_Search_Action(ActionObject):
 
                 #pprint(row_info)
                 result.append(row_info)
-
-        return {'results': result,
-                'success': True}
-
+        results = {
+        	'results': result,
+        	'success': True
+        }
+        return results

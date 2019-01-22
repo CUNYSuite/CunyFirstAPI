@@ -26,16 +26,6 @@ class Locations():
         self._session = session
 
     def get_location_object(self, location):
-        '''
-        if location == Locations.student_center:
-            return Student_Center(self._session, self._college_code)
-        elif location == Locations.student_grades:
-            return Student_Grades(self._session, self._college_code)
-        elif location == Locations.transcript:
-            return Transcript_Page(self._session, self._college_code)
-        else:
-            return None
-        '''
         try:
 
             return {

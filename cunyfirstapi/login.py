@@ -74,9 +74,7 @@ def login(username, password):
         data=data
     )
     response = new_session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
-
     tree = html.fromstring(response.text)
-
     new_session.icsid = ''.join(tree.xpath('//*[@id="ICSID"]/@value'))
 
     return new_session
