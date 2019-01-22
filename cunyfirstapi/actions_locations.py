@@ -19,7 +19,7 @@ class Location:
         self._college_code = college_code
 
     def set_sid(self, icsid):
-    	self._icsid = icsid
+        self._icsid = icsid
 
     def move(self):
         raise NotImplementedError
