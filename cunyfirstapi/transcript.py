@@ -69,7 +69,7 @@ class Transcript_Page_Action(ActionObject):
         self._location = location
 
     def location(self):
-        return Transcript_Page()
+        return self._location
 
     def download(self, alt_college_code=None):
         if data is None:
