@@ -21,7 +21,7 @@ end
 username = "$CUNY_USERNAME"
 password = "$CUNY_PASSWORD"
 ## Unit Tests
-system("python3 ./src/tests/tests.py --username=%s --password=%s 2> log.txt" % [username, password])
+system("python3 ./cunyfirstapi/tests/tests.py --username=%s --password=%s 2> log.txt" % [username, password])
 unit_text = File.read("./log.txt")
 if not unit_text.include?('OK')
 	clean_text = unit_text.sub("/%s|%s/" % [username, password], "[REDACTED]") 
