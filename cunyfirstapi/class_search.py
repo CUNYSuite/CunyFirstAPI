@@ -73,17 +73,16 @@ class Class_Search(Location):
 
         return self
     def action(self):
-        return Class_Search_Action(self._session, self._response)
+        return Class_Search_Action(self)
 
 
 class Class_Search_Action(ActionObject):
 
-    def __init__(self, session, response):
-        self._session = session
-        self._response = response
+    def __init__(self, location):
+        self._location = location
 
     def location(self):
-        return Class_Search()
+        return self._location #Class_Search()
 
 
     def submit_search(self, institution, term, course_number, subject='', \
@@ -127,7 +126,7 @@ class Class_Search_Action(ActionObject):
             'ICChanged': '-1',
             'ICAutoSave': '0',
             'ICResubmit': '0',
-            'ICSID': self._session.icsid,
+            'ICSID': self._location._session.icsid,
             'ICActionPrompt': 'false',
             'ICBcDomData': '',
             'ICFind': '',
@@ -178,8 +177,8 @@ class Class_Search_Action(ActionObject):
             'ptus_componenturl': 'https://hrsa.cunyfirst.cuny.edu/psp/cnyhcprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.CLASS_SEARCH.GBL'
         }
 
-        response = self._session.post(url=constants.CUNY_FIRST_CLASS_SEARCH_URL, data=payload, headers=headers)
-        
+        response = self._location._session.post(url=constants.CUNY_FIRST_CLASS_SEARCH_URL, data=payload, headers=headers)
+        ###################################################
         if not parsed:
             return response.text
 
