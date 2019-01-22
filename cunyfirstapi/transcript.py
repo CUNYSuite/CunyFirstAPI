@@ -92,7 +92,7 @@ class Transcript_Page_Action(ActionObject):
         data['ICYPos'] ='115'
 
         # tell it we picked that college
-        r = self.location()_session.post(url, data=data)
+        r = self.location()._session.post(url, data=data)
 
         # tell it we selected "Student Unofficial Transcript"
         data['ICStateNum'] = '6'

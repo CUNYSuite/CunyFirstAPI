@@ -10,10 +10,11 @@ License: MIT
 '''
 ###***********************************###
 import unittest
-from ..locations_enum import Location
-from ..cunyfirstapi import CUNYFirstAPI
+from cunyfirstapi import CUNYFirstAPI
+from cunyfirstapi.locations_enum import Locations
+#import CUNYFirstAPI
 import argparse
-
+import sys
 
 global username
 global password
@@ -27,7 +28,8 @@ class TestTest(unittest.TestCase):
 class ClassSearchTest(unittest.TestCase):
     def test(self):
         api = CUNYFirstAPI(username, password)
-        search_page = api.move_to(Location.class_search)
+        api.login()
+        search_page = api.move_to(Locations.class_search)
         results = search_page.submit_search(institution='QNS01', term='1192', \
             subject = 'CSCI', course_number='111')
         self.assertTrue(len(results['results']) > 0)
@@ -35,21 +37,25 @@ class ClassSearchTest(unittest.TestCase):
 
 
 def run_test():
-    unittest.main()
-
-def main():
     global username
     global password
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--username')
     parser.add_argument('--password')
+    parser.add_argument('unittest_args', nargs='*')
 
-    args = parser.parse_args
+    args = parser.parse_args()
+
     username = args.username
     password = args.password
 
+    sys.argv[1:] = args.unittest_args
+    unittest.main()
 
+def main():
     run_test()
 
 if __name__ == '__main__':
+
     main()
