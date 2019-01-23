@@ -86,7 +86,73 @@ class Class_Search_Action(ActionObject):
     def location(self):
         return self._location #Class_Search()
 
-
+    '''
+    ICAction: Tell the server we are gonna search for a class now
+    ICSID: The unique key which tells the server what session we are
+    institution: one of the cuny college codes which tells the server
+                  which college we are searching for classes in
+    term: number code of the term we are searching for classes in.
+    TODO: write a function which retrieves number codes based on name  
+    subject: capital letter course code (CSCI, ENSCI, LCD, etc...)
+    course_number_match: type of match for course_number
+                         'E' -> exactly match (default)
+                         'C' -> contains digits
+                         'G' -> greater than or equal to
+                         'T' -> less than or equal to
+    course_number: the course code (111 in CSCI 111, or the 3 in ASTR 3. etc...)
+    course_career: undergraduate or graduate (those are the options for QNS)
+                         'GRAD' -> graduate
+                         'UGRD' -> undergraduate
+    course_attribute: courses for specific programs such as ASAP, 
+                         SEEK, ESL, Macaulay, etc...
+                         see website for full list (PUT THEM ALL IN THE DOCS)
+    course_attribute_value: subprograms within the course_attribute program
+                         see website for full list (PUT THEM ALL IN THE DOCS?)
+    requirement_designation: choose which requirement designation the courses
+                         should fulfill (Creative Expression, Scientific World, etc...)
+    open_class_only: True if only looking for open classes, False for all classes
+    course_keyword: provide keywords to filter course search by
+    course_component: search by class type being lecture, lab, dissertation, etc...
+                        (SEE WEBSITE AND PUT IN DOCS)
+    class_number: choose specific class ID number (will return exactly 1 result)   
+    session: decide which session of a term to look for 
+            examples: 6 week 1, 6 week 2, winter, 8 week 1 etc...
+            see website for full list (PUT THEM ALL IN THE DOCS)
+    mode_of_instruction: courses taught in a specific mode of instruction
+                            fully online, hybrid, in person etc...
+                            see website for full list (PUT THEM ALL IN THE DOCS) 
+    meeting_start_time_match: decide if class start time between 2 times (will be done in net PR)
+                                after a time, before a time etc...
+    meeting_start_time: time in format of HH:MMAM or HH:MMPM
+    meeting_end_time_match: decide if class end time between 2 times (will be done in net PR)
+                                after a time, before a time etc...
+    meeting_end_time: time in format of HH:MMAM or HH:MMPM
+    days_of_week_match: decide if to include any/only of specified days (J/I)
+                               or to exclude any/only of specified days (F/E)
+                               (SEE WEBSITE AND PUT IN DOCS)
+    days_of_week: array with names of days of the week for the type of match specified above
+    minimum_units_match: match course by credits with numerical comparison
+                        'GT' -> greater than
+                        'GE' -> greater than or equal to (default)
+                        'E' -> equal to
+                        'LT' -> less than
+                        'LE' -> less than or equal to
+    minimum_units: lowest number of credits, matched by above comparison type
+    maximum_units_match: match course by credits with numerical comparison
+                        'GT' -> greater than
+                        'GE' -> greater than or equal to 
+                        'E' -> equal to
+                        'LT' -> less than
+                        'LE' -> less than or equal to (default)
+    maximum_units: highest number of credits, matched by above comparison type
+    campus: name of campus (varies by college, so check website)
+    _location: name of location (varies by college+campus, check website)
+    instructor_last_name_match: type of comparison for instructor's last name
+                        'B' -> begins with
+                        'C' -> contains
+                        'E' -> is exactly
+    instructor_last_name: part or whole of instructor's last name, match by above
+    '''   
     def submit_search(self, institution, term, course_number, 
                         subject='', course_number_match='E', 
                         course_career='', course_attribute='', 
@@ -121,48 +187,18 @@ class Class_Search_Action(ActionObject):
             'Referer': constants.CUNY_FIRST_CLASS_SEARCH_URL,
             'Connection': 'keep-alive',
         }  
-        '''  
-        ICAction: Tell the server we are gonna search for a class now
-        ICSID: The unique key which tells the server what session we are
-        '''
+
+        # tell server who we are and what we wanna do
         action_options = {
             'ICAction': 'CLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH',
             'ICSID': self._location._session.icsid
             }
-        '''
-        institution: one of the cuny college codes which tells the server
-                      which college we are searching for classes in
-        term: number code of the term we are searching for classes in.
-        TODO: write a function which retrieves number codes based on name
-        '''
+        # fill in mandatory options of college and term
         mandatory_options = {
             'CLASS_SRCH_WRK2_INSTITUTION$31$': institution,
             'CLASS_SRCH_WRK2_STRM$35$': term
             }
-        '''
-        subject: capital letter course code (CSCI, ENSCI, LCD, etc...)
-        course_number_match: type of match for course_number
-                             'E' -> exactly match (default)
-                             'C' -> contains digits
-                             'G' -> greater than or equal to
-                             'T' -> less than or equal to
-        course_number: the course code (111 in CSCI 111, or the 3 in ASTR 3. etc...)
-        course_career: undergraduate or graduate (those are the options for QNS)
-                             'GRAD' -> graduate
-                             'UGRD' -> undergraduate
-        course_attribute: courses for specific programs such as ASAP, 
-                             SEEK, ESL, Macaulay, etc...
-                             see website for full list (PUT THEM ALL IN THE DOCS)
-        course_attribute_value: subprograms within the course_attribute program
-                             see website for full list (PUT THEM ALL IN THE DOCS?)
-        requirement_designation: choose which requirement designation the courses
-                             should fulfill (Creative Expression, Scientific World, etc...)
-        open_class_only: True if only looking for open classes, False for all classes
-        course_keyword: provide keywords to filter course search by
-        course_component: search by class type being lecture, lab, dissertation, etc...
-                            (SEE WEBSITE AND PUT IN DOCS)
-        class_number: choose specific class ID number (will return exactly 1 result)
-        '''
+        # options pertaining to the generic course itself, or a specific class based on number
         course_options = {
             'SSR_CLSRCH_WRK_SUBJECT_SRCH$0' : subject,
             'SSR_CLSRCH_WRK_SSR_EXACT_MATCH1$1': course_number_match,
@@ -176,24 +212,7 @@ class Class_Search_Action(ActionObject):
             'SSR_CLSRCH_WRK_SSR_COMPONENT$13': course_component,
             'SSR_CLSRCH_WRK_CLASS_NBR$10': class_number
         }
-        '''
-        session: decide which session of a term to look for 
-                examples: 6 week 1, 6 week 2, winter, 8 week 1 etc...
-                see website for full list (PUT THEM ALL IN THE DOCS)
-        mode_of_instruction: courses taught in a specific mode of instruction
-                                fully online, hybrid, in person etc...
-                                see website for full list (PUT THEM ALL IN THE DOCS) 
-        meeting_start_time_match: decide if class start time between 2 times (will be done in net PR)
-                                    after a time, before a time etc...
-        meeting_start_time: time in format of HH:MMAM or HH:MMPM
-        meeting_end_time_match: decide if class end time between 2 times (will be done in net PR)
-                                    after a time, before a time etc...
-        meeting_end_time: time in format of HH:MMAM or HH:MMPM
-        days_of_week_match: decide if to include any/only of specified days (J/I)
-                                   or to exclude any/only of specified days (F/E)
-                                   (SEE WEBSITE AND PUT IN DOCS)
-        days_of_week: array with names of days of the week for the type of match specified above
-        '''
+        # options pertaining to when the class of a course takes place
         day_time_options = {
             'SSR_CLSRCH_WRK_SESSION_CODE$6': session,
             'SSR_CLSRCH_WRK_INSTRUCTION_MODE$7': mode_of_instruction,
@@ -210,47 +229,24 @@ class Class_Search_Action(ActionObject):
             'SSR_CLSRCH_WRK_SAT$chk$9': '' if 'saturday' not in days_of_week else 'Y',
             'SSR_CLSRCH_WRK_SUN$chk$9': '' if 'sunday' not in days_of_week else 'Y',
         }
-        '''
-        minimum_units_match: match course by credits with numerical comparison
-                            'GT' -> greater than
-                            'GE' -> greater than or equal to (default)
-                            'E' -> equal to
-                            'LT' -> less than
-                            'LE' -> less than or equal to
-        minimum_units: lowest number of credits, matched by above comparison type
-        maximum_units_match: match course by credits with numerical comparison
-                            'GT' -> greater than
-                            'GE' -> greater than or equal to 
-                            'E' -> equal to
-                            'LT' -> less than
-                            'LE' -> less than or equal to (default)
-        maximum_units: highest number of credits, matched by above comparison type
-        '''
+        # options pertaining to how many credits a course is
         credits_options = {
             'SSR_CLSRCH_WRK_SSR_UNITS_MIN_OPR$12': minimum_units_match,
             'SSR_CLSRCH_WRK_UNITS_MINIMUM$12': minimum_units,
             'SSR_CLSRCH_WRK_SSR_UNITS_MAX_OPR$12': maximum_units_match,
             'SSR_CLSRCH_WRK_UNITS_MAXIMUM$12': maximum_units,
         }
-        '''
-        campus: name of campus (varies by college, so check website)
-        _location: name of location (varies by college+campus, check website)
-        '''
+        # options pertaining to where the class is located
         location_options = {    
             'SSR_CLSRCH_WRK_CAMPUS$14': campus,
             'SSR_CLSRCH_WRK_LOCATION$15': _location,
         }
-        '''
-        instructor_last_name_match: type of comparison for instructor's last name
-                            'B' -> begins with
-                            'C' -> contains
-                            'E' -> is exactly
-        instructor_last_name: part or whole of instructor's last name, match by above
-        '''
+        # options pertaining to who is teaching the class
         instructor_options = {
             'SSR_CLSRCH_WRK_SSR_EXACT_MATCH2$16': instructor_last_name_match,
             'SSR_CLSRCH_WRK_LAST_NAME$16': instructor_last_name
         }
+        # stitch em all together
         payload = dict(action_options, **mandatory_options, **course_options, 
             **day_time_options, **credits_options, **location_options, **instructor_options)
 
