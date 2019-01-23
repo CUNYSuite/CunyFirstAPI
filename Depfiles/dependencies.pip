@@ -1,0 +1,7 @@
+lxml
+beautifulsoup4
+twilio
+requests
+pylint
+python-dotenv
+colorconsole
