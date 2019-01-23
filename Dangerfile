@@ -21,7 +21,9 @@ end
 
 ## Unit Tests
 
+
 system("python3 ./tests/run_tests.py 2> log.txt")
+
 
 unit_text = File.read("./log.txt")
 if not unit_text.include?('OK')
