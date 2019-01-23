@@ -60,8 +60,6 @@ class CUNYFirstAPI():
         if college_code:
              self._college_code = college_code
 
-        print(username)
-        print(password)
         self._session = cuny_login.login(
             self._username, 
             self._password, 
@@ -70,7 +68,6 @@ class CUNYFirstAPI():
             self._session, 
             self._college_code
         )
-        print(self.is_logged_in(self._session))
 
     def move_to(self, loc):
         location = self._location_parser.get_location_object(loc)

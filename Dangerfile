@@ -18,7 +18,9 @@ if forgot_tests and not declared_trivial
 	warn("It appears that you forgot to add a Unit Test to the test file.\n Please add a test and upload the new version.\n The test file can currently be found at: cunyfirstapi/tests/tests.py")
 end
 
+
 ## Unit Tests
+system("python3 ./tests/run_tests.py 2> log.txt")
 unit_text = File.read("./log.txt")
 if not unit_text.include?('OK')
 	fail(unit_text)
