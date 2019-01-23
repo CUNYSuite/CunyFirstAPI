@@ -20,8 +20,7 @@ end
 
 
 ## Unit Tests
-system("python3 ./tests/run_tests.py 2> log.txt")
-unit_text = File.read("./log.txt")
+unit_text = `python3 ./tests/run_tests.py`
 if not unit_text.include?('OK')
 	fail(unit_text)
 else
