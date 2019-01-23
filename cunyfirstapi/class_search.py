@@ -110,7 +110,7 @@ class Class_Search_Action(ActionObject):
                          see website for full list (PUT THEM ALL IN THE DOCS?)
     requirement_designation: choose which requirement designation the courses
                          should fulfill (Creative Expression, Scientific World, etc...)
-    open_class_only: True if only looking for open classes, False for all classes
+    open_classes_only: True if only looking for open classes, False for all classes
     course_keyword: provide keywords to filter course search by
     course_component: search by class type being lecture, lab, dissertation, etc...
                         (SEE WEBSITE AND PUT IN DOCS)
@@ -225,6 +225,7 @@ class Class_Search_Action(ActionObject):
             'SSR_CLSRCH_WRK_SSR_COMPONENT$13': course_component,
             'SSR_CLSRCH_WRK_CLASS_NBR$10': class_number
         }
+        #pprint(course_options)
         # options pertaining to when the class of a course takes place
         day_time_options = {
             'SSR_CLSRCH_WRK_SESSION_CODE$6': session,
@@ -282,7 +283,17 @@ class Class_Search_Action(ActionObject):
                 'success' : False,
                 'reason' : warning
             }
-
+        if re.search(r'<span  class=\'SSSMSGALERTTEXT\'.*</span>', response.text):
+            #print(re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text).group(0))
+            tree = html.fromstring(re.search(r'<span  class=\'SSSMSGALERTTEXT\'.*</span>', response.text).group(0))
+            warning = ''.join(tree.xpath('//span[@class="SSSMSGALERTTEXT"]/text()'))
+            return {
+                'results': result,
+                'success' : False,
+                'reason' : warning
+            }
+        
+        #print(response.text)
         tree = html.fromstring(re.search(r'(<table class=\'PSPAGECONTAINER\'[\s\S]*</table>)\n<DIV class=',response.text).group(1))
         course_divs = tree.xpath('//div[contains(@id,"win0divSSR_CLSRSLT_WRK_GROUPBOX2") and not(contains(@id,"GP"))]')
 
@@ -308,7 +319,10 @@ class Class_Search_Action(ActionObject):
                     'mode_of_instruction': ''.join(row.xpath('.//span[contains(@id,"INSTRUCT_MODE_DESCR$")]/text()')).strip()
                 }
 
-                #pprint(row_info)
+                # you wouldn't believe it but cunyfirst actually does not always properly return
+                # open classes. good job cunyfirst
+                if open_classes_only and row_info['status'] != 'OPEN':
+                    continue
                 result.append(row_info)
         results = {
             'results': result,

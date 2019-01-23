@@ -16,11 +16,6 @@ from bs4 import BeautifulSoup
 from lxml import etree
 from os.path import join, dirname
 from cunyfirstapi import login as cuny_login
-from cunyfirstapi import constants
-from cunyfirstapi.student_center import Student_Center, Student_Center_Action
-from cunyfirstapi.grades import Student_Grades, Student_Grades_Action
-from cunyfirstapi.actions_locations import ActionObject, Location
-from cunyfirstapi.transcript import Transcript_Page, Transcript_Page_Action
 from cunyfirstapi.locations_enum import Locations
 
 class CUNYFirstAPI():
