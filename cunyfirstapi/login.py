@@ -42,11 +42,12 @@ def login(username, password):
         'submit': ''
     }
 
+    print(data)
+
     response = new_session.post(
         url = constants.CUNY_FIRST_AUTH_SUBMIT_URL, 
         data = data
     )
-    print(response.text)
 
     # STUDENT CENTER
     response = new_session.get(constants.CUNY_FIRST_STUDENT_CENTER_URL)

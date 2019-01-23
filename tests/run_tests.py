@@ -79,7 +79,7 @@ def main():
     if is_ci():
         print("Running on CI.....")
         get_username_password()
-        monkey_path_print()
+        # monkey_path_print()
 
     run_test()
 
