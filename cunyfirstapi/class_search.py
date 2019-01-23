@@ -28,7 +28,7 @@ class Class_Search(Location):
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
-            'Referer': f'{constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL}',
+            'Referer': constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL,
             'Connection': 'keep-alive',
         }
         payload = { 'ICAJAX': '1',
@@ -65,9 +65,12 @@ class Class_Search(Location):
         
         #pprint(self._session.cookies.get_dict())
 
-        self._response = self._session.post(constants.CUNY_FIRST_STUDENT_CENTER_BASE_URL, data=payload, headers=headers)
+        self._response = self._session.post(url=constants.CUNY_FIRST_STUDENT_CENTER_BASE_URL, 
+            data=payload, 
+            headers=headers)
         #print(self._response.text)
-        self._response = self._session.get(constants.CUNY_FIRST_CLASS_SEARCH_URL, headers=headers)
+        self._response = self._session.get(url=constants.CUNY_FIRST_CLASS_SEARCH_URL, 
+            headers=headers)
         #print(self._response.text)
 
         return self
@@ -115,35 +118,52 @@ class Class_Search_Action(ActionObject):
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
-            'Referer': f'{constants.CUNY_FIRST_CLASS_SEARCH_URL}',
+            'Referer': constants.CUNY_FIRST_CLASS_SEARCH_URL,
             'Connection': 'keep-alive',
-        }    
-        payload = {
-            'ICAJAX': '1',
-            'ICNAVTYPEDROPDOWN': '1',
-            'ICType': 'Panel',
-            'ICElementNum': '0',
-            #'ICStateNum': '6',
+        }  
+        '''  
+        ICAction: Tell the server we are gonna search for a class now
+        ICSID: The unique key which tells the server what session we are
+        '''
+        action_options = {
             'ICAction': 'CLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH',
-            'ICXPos': '0',
-            'ICYPos': '177',
-            'ResponsetoDiffFrame': '-1',
-            'TargetFrameName': 'None',
-            'FacetPath': 'None',
-            'ICFocus': '',
-            'ICSaveWarningFilter': '0',
-            'ICChanged': '-1',
-            'ICAutoSave': '0',
-            'ICResubmit': '0',
-            'ICSID': self._location._session.icsid,
-            'ICActionPrompt': 'false',
-            'ICBcDomData': '',
-            'ICFind': '',
-            'ICAddCount': '',
-            'ICAPPCLSDATA': '',
-            'DERIVED_SSTSNAV_SSTS_MAIN_GOTO$7$': '9999',
+            'ICSID': self._location._session.icsid
+            }
+        '''
+        institution: one of the cuny college codes which tells the server
+                      which college we are searching for classes in
+        term: number code of the term we are searching for classes in.
+        TODO: write a function which retrieves number codes based on name
+        '''
+        mandatory_options = {
             'CLASS_SRCH_WRK2_INSTITUTION$31$': institution,
-            'CLASS_SRCH_WRK2_STRM$35$': term,
+            'CLASS_SRCH_WRK2_STRM$35$': term
+            }
+        '''
+        subject: capital letter course code (CSCI, ENSCI, LCD, etc...)
+        course_number_match: type of match for course_number
+                             'E' -> exactly match (default)
+                             'C' -> contains digits
+                             'G' -> greater than or equal to
+                             'T' -> less than or equal to
+        course_number: the course code (111 in CSCI 111, or the 3 in ASTR 3. etc...)
+        course_career: undergraduate or graduate (those are the options for QNS)
+                             'GRAD' -> graduate
+                             'UGRD' -> undergraduate
+        course_attribute: courses for specific programs such as ASAP, 
+                             SEEK, ESL, Macaulay, etc...
+                             see website for full list (PUT THEM ALL IN THE DOCS)
+        course_attribute_value: subprograms within the course_attribute program
+                             see website for full list (PUT THEM ALL IN THE DOCS?)
+        requirement_designation: choose which requirement designation the courses
+                             should fulfill (Creative Expression, Scientific World, etc...)
+        open_class_only: True if only looking for open classes, False for all classes
+        course_keyword: provide keywords to filter course search by
+        course_component: search by class type being lecture, lab, dissertation, etc...
+                            (SEE WEBSITE AND PUT IN DOCS)
+        class_number: choose specific class ID number (will return exactly 1 result)
+        '''
+        course_options = {
             'SSR_CLSRCH_WRK_SUBJECT_SRCH$0' : subject,
             'SSR_CLSRCH_WRK_SSR_EXACT_MATCH1$1': course_number_match,
             'SSR_CLSRCH_WRK_CATALOG_NBR$1': course_number,
@@ -152,6 +172,29 @@ class Class_Search_Action(ActionObject):
             'SSR_CLSRCH_WRK_CRSE_ATTR_VALUE$3': course_attribute_value,
             'SSR_CLSRCH_WRK_CU_RQMNT_DESIGNTN$4': requirement_designation,
             'SSR_CLSRCH_WRK_SSR_OPEN_ONLY$chk$5': 'Y' if open_classes_only else 'N',
+            'SSR_CLSRCH_WRK_DESCR$11': course_keyword,
+            'SSR_CLSRCH_WRK_SSR_COMPONENT$13': course_component,
+            'SSR_CLSRCH_WRK_CLASS_NBR$10': class_number
+        }
+        '''
+        session: decide which session of a term to look for 
+                examples: 6 week 1, 6 week 2, winter, 8 week 1 etc...
+                see website for full list (PUT THEM ALL IN THE DOCS)
+        mode_of_instruction: courses taught in a specific mode of instruction
+                                fully online, hybrid, in person etc...
+                                see website for full list (PUT THEM ALL IN THE DOCS) 
+        meeting_start_time_match: decide if class start time between 2 times (will be done in net PR)
+                                    after a time, before a time etc...
+        meeting_start_time: time in format of HH:MMAM or HH:MMPM
+        meeting_end_time_match: decide if class end time between 2 times (will be done in net PR)
+                                    after a time, before a time etc...
+        meeting_end_time: time in format of HH:MMAM or HH:MMPM
+        days_of_week_match: decide if to include any/only of specified days (J/I)
+                                   or to exclude any/only of specified days (F/E)
+                                   (SEE WEBSITE AND PUT IN DOCS)
+        days_of_week: array with names of days of the week for the type of match specified above
+        '''
+        day_time_options = {
             'SSR_CLSRCH_WRK_SESSION_CODE$6': session,
             'SSR_CLSRCH_WRK_INSTRUCTION_MODE$7': mode_of_instruction,
             'SSR_CLSRCH_WRK_SSR_START_TIME_OPR$8': meeting_start_time_match,
@@ -166,27 +209,55 @@ class Class_Search_Action(ActionObject):
             'SSR_CLSRCH_WRK_FRI$chk$9': '' if 'friday' not in days_of_week else 'Y',
             'SSR_CLSRCH_WRK_SAT$chk$9': '' if 'saturday' not in days_of_week else 'Y',
             'SSR_CLSRCH_WRK_SUN$chk$9': '' if 'sunday' not in days_of_week else 'Y',
-            'SSR_CLSRCH_WRK_CLASS_NBR$10': class_number,
-            'SSR_CLSRCH_WRK_DESCR$11': course_keyword,
+        }
+        '''
+        minimum_units_match: match course by credits with numerical comparison
+                            'GT' -> greater than
+                            'GE' -> greater than or equal to (default)
+                            'E' -> equal to
+                            'LT' -> less than
+                            'LE' -> less than or equal to
+        minimum_units: lowest number of credits, matched by above comparison type
+        maximum_units_match: match course by credits with numerical comparison
+                            'GT' -> greater than
+                            'GE' -> greater than or equal to 
+                            'E' -> equal to
+                            'LT' -> less than
+                            'LE' -> less than or equal to (default)
+        maximum_units: highest number of credits, matched by above comparison type
+        '''
+        credits_options = {
             'SSR_CLSRCH_WRK_SSR_UNITS_MIN_OPR$12': minimum_units_match,
             'SSR_CLSRCH_WRK_UNITS_MINIMUM$12': minimum_units,
             'SSR_CLSRCH_WRK_SSR_UNITS_MAX_OPR$12': maximum_units_match,
             'SSR_CLSRCH_WRK_UNITS_MAXIMUM$12': maximum_units,
-            'SSR_CLSRCH_WRK_SSR_COMPONENT$13': course_component,
+        }
+        '''
+        campus: name of campus (varies by college, so check website)
+        _location: name of location (varies by college+campus, check website)
+        '''
+        location_options = {    
             'SSR_CLSRCH_WRK_CAMPUS$14': campus,
             'SSR_CLSRCH_WRK_LOCATION$15': _location,
-            'SSR_CLSRCH_WRK_SSR_EXACT_MATCH2$16': instructor_last_name_match,
-            'SSR_CLSRCH_WRK_LAST_NAME$16': instructor_last_name,
-            'DERIVED_SSTSNAV_SSTS_MAIN_GOTO$8$': '9999',
-            'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
-            'ptus_dbname': 'CNYHCPRD',
-            'ptus_portal': 'EMPLOYEE',
-            'ptus_node': 'HRMS',
-            'ptus_workcenterid': '',
-            'ptus_componenturl': 'https://hrsa.cunyfirst.cuny.edu/psp/cnyhcprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.CLASS_SEARCH.GBL'
         }
+        '''
+        instructor_last_name_match: type of comparison for instructor's last name
+                            'B' -> begins with
+                            'C' -> contains
+                            'E' -> is exactly
+        instructor_last_name: part or whole of instructor's last name, match by above
+        '''
+        instructor_options = {
+            'SSR_CLSRCH_WRK_SSR_EXACT_MATCH2$16': instructor_last_name_match,
+            'SSR_CLSRCH_WRK_LAST_NAME$16': instructor_last_name
+        }
+        payload = dict(action_options, **mandatory_options, **course_options, 
+            **day_time_options, **credits_options, **location_options, **instructor_options)
 
-        response = self._location._session.post(url=constants.CUNY_FIRST_CLASS_SEARCH_URL, data=payload, headers=headers)
+        response = self.location()._session.post(
+            url=constants.CUNY_FIRST_CLASS_SEARCH_URL, 
+            data=payload, 
+            headers=headers)
         ###################################################
         if not parsed:
             return response.text
@@ -207,14 +278,10 @@ class Class_Search_Action(ActionObject):
         course_divs = tree.xpath('//div[contains(@id,"win0divSSR_CLSRSLT_WRK_GROUPBOX2") and not(contains(@id,"GP"))]')
 
         for div in course_divs:
-
             rows = div.xpath('.//tr[contains(@id,"trSSR_CLSRCH_MTG1$") and contains(@id,"_row")]')
             div_title = ''.join(div.xpath('.//div[contains(@id,"win0divSSR_CLSRSLT_WRK_GROUPBOX2GP")]/text()'))
-
             div_title = re.sub('\xa0',' ',div_title)
-
             _subject, _course_number, _title = re.search(r'^\s(\w+)\s+([\d\w]+)\s*-\s*(.+)',div_title).group(1,2,3)
-
             for row in rows:
                 row_info = {
                     'subject': _subject,
