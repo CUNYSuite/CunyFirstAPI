@@ -12,7 +12,7 @@ License: MIT
 import requests
 import re
 from lxml import html
-from . import constants
+from cunyfirstapi import constants
 
 def is_logged_in(session):
 

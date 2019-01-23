@@ -10,6 +10,9 @@ License: MIT
 '''
 ###***********************************###
 import unittest
+import sys
+#from os import sys, path
+#sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from cunyfirstapi import CUNYFirstAPI
 from cunyfirstapi.locations_enum import Locations
 #import CUNYFirstAPI

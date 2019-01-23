@@ -10,10 +10,10 @@ License: MIT
 '''
 ###***********************************###
 import enum 
-from .grades import Student_Grades
-from .student_center import Student_Center
-from .transcript import Transcript_Page
-from .class_search import Class_Search
+from cunyfirstapi.grades import Student_Grades
+from cunyfirstapi.student_center import Student_Center
+from cunyfirstapi.transcript import Transcript_Page
+from cunyfirstapi.class_search import Class_Search
 
 class Locations():
     student_center = 0

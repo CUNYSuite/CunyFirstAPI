@@ -14,9 +14,9 @@ from lxml import html, etree
 from bs4 import BeautifulSoup
 from lxml import etree
 from os.path import join
-from . import constants
-from .helper import get_semester
-from .actions_locations import ActionObject, Location
+from cunyfirstapi import constants
+from cunyfirstapi.helper import get_semester
+from cunyfirstapi.actions_locations import ActionObject, Location
 
 class Student_Grades(Location):
     def move(self):
