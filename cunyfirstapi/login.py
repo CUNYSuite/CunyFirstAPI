@@ -41,9 +41,7 @@ def login(username, password):
         'password': password.strip(),
         'submit': ''
     }
-
-    print(data)
-
+    
     response = new_session.post(
         url = constants.CUNY_FIRST_AUTH_SUBMIT_URL, 
         data = data
