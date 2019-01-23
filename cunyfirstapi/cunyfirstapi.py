@@ -59,6 +59,11 @@ class CUNYFirstAPI():
         if college_code:
              self._college_code = college_code
 
+        if not username:
+            print("NO USENAME")
+        if password:
+            print("NO PASSWORD")
+            
         self._session = cuny_login.login(
             self._username, 
             self._password, 
