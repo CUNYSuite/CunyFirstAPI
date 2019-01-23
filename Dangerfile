@@ -15,17 +15,17 @@ fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 forgot_tests = !git.modified_files.include?("/tests/run_tests.py")
 
 if forgot_tests and not declared_trivial
-	warn("It appears that you forgot to add a Unit Test to the test file.\n Please add a test and upload the new version.\n The test file can currently be found at: cunyfirstapi/tests/tests.py")
+	warn("It appears that you forgot to add a Unit Test to the test file.\n Please add a test and upload the new version.\n The test file can currently be found at: tests/run_tests.py")
 end
 
-username = "$CUNY_USERNAME"
-password = "$CUNY_PASSWORD"
+
 ## Unit Tests
-system("python3 ./tests/run_tests.py --username=%s --password=%s 2> log.txt" % [username, password])
+
+system("python3 ./tests/run_tests.py 2> log.txt")
+
 unit_text = File.read("./log.txt")
 if not unit_text.include?('OK')
-	clean_text = unit_text.sub("/%s|%s/" % [username, password], "[REDACTED]") 
-	fail(clean_text)
+	fail(unit_text)
 else
 	message("All Unit Test Passed! 🤟")
 end
