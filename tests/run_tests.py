@@ -61,7 +61,7 @@ class TestClassSearch(unittest.TestCase):
             loc = api.move_to(Locations.class_search).location()
             result2 = loc.action().submit_search(institution='QNS01', term='1192', course_number_match='G',
                 course_number='1', days_of_week_match='J', days_of_week=['Tuesday'])
-            test2 = len(result2['results'] == 0)
+            test2 = len(result2['results']) == 0
 
             # test mode of instruction, open classes only, requirement designation
             loc = api.move_to(Locations.class_search).location()
