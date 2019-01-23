@@ -42,8 +42,6 @@ def login(username, password):
         'submit': ''
     }
 
-    print(data)
-
     new_session.post(
         url = constants.CUNY_FIRST_AUTH_SUBMIT_URL, 
         data = data
@@ -64,6 +62,7 @@ def login(username, password):
         data = data
     )
     tree = html.fromstring(response.text)
+    print(tree)
 
     try:
         encreply = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
@@ -76,6 +75,7 @@ def login(username, password):
         data=data
     )
     response = new_session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
+    print(response.text)
     return new_session
 
     def logout(session):
