@@ -50,8 +50,8 @@ class CUNYFirstAPI():
     def is_logged_in(self, session=None):
         return cuny_login.is_logged_in(session if session else self._session)
             
-
-    def login(self, username=None, password=None, college_code=None):        
+    def login(self, username=None, password=None, college_code=None):   
+    
         if username:
             self._username = username
         if password:
@@ -71,6 +71,4 @@ class CUNYFirstAPI():
     def move_to(self, loc):
         location = self._location_parser.get_location_object(loc)
         return location.move().action()
-
-
 
