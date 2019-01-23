@@ -36,13 +36,13 @@ def login(username, password):
     username = re.sub(r'@login\.cuny\.edu','',username)  
 
     data = {
-        'usernameH': f'{username.strip()}@login.cuny.edu',
-        'username': username.strip(),
-        'password': password.strip(),
+        'usernameH': f'{username}@login.cuny.edu',
+        'username': username,
+        'password': password,
         'submit': ''
     }
-    
-    response = new_session.post(
+
+    new_session.post(
         url = constants.CUNY_FIRST_AUTH_SUBMIT_URL, 
         data = data
     )

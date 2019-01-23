@@ -19,10 +19,6 @@ from cunyfirstapi import CUNYFirstAPI
 from cunyfirstapi.redacted_stdout import RedactedPrint, \
     STDOutOptions, RedactedFile
 
-#import CUNYFirstAPI
-import argparse
-import sys
-
 username = None
 password = None
 redacted_print_std = None
@@ -61,7 +57,6 @@ def monkey_path_print():
     redacted_print_err = RedactedPrint(STDOutOptions.ERROR, redacted_list)
     redacted_print_std.enable()
     redacted_print_err.enable()
-
 
 def is_local():
     return not is_venus_mars() and not is_ci()
