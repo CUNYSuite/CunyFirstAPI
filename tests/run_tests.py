@@ -17,6 +17,9 @@ sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from cunyfirstapi.locations_enum import Locations
 from cunyfirstapi import CUNYFirstAPI
 
+from redacted_stdout import RedactedPrint, \
+    STDOutOptions, RedactedFile
+
 #import CUNYFirstAPI
 import argparse
 import sys
@@ -24,6 +27,8 @@ import sys
 username = ''
 password = ''
 
+redacted_print_std = None
+redacted_print_err = None
 
 class TestTest(unittest.TestCase):
     def test(self):
@@ -52,6 +57,18 @@ def get_username_password():
         username = f.readline()
         password = f.readline()
 
+def monkey_path_print():
+    global username
+    global password
+    global redacted_print_std
+    global redacted_print_err
+    ## Monkey Patching stdout to remove any sens. data
+    redacted_list = [username, password]
+    redacted_print_std = RedactedPrint(STDOutOptions.STDOUT, redacted_list)
+    redacted_print_err = RedactedPrint(STDOutOptions.ERROR, redacted_list)
+    redacted_print_std.enable()
+    redacted_print_err.enable()
+
 
 def is_local():
     return not is_venus_mars() and not is_ci()
@@ -71,6 +88,7 @@ def main():
     if is_ci():
         print("Running on CI.....")
         get_username_password()
+        monkey_path_print()
 
     run_test()
 
