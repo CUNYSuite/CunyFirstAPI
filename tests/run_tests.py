@@ -16,7 +16,6 @@ import os
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 from cunyfirstapi.locations_enum import Locations
 from cunyfirstapi import CUNYFirstAPI
-
 from redacted_stdout import RedactedPrint, \
     STDOutOptions, RedactedFile
 
@@ -29,6 +28,7 @@ password = ''
 
 redacted_print_std = None
 redacted_print_err = None
+
 
 class TestTest(unittest.TestCase):
     def test(self):
@@ -62,7 +62,7 @@ def monkey_path_print():
     global password
     global redacted_print_std
     global redacted_print_err
-    ## Monkey Patching stdout to remove any sens. data
+    # Monkey Patching stdout to remove any sens. data
     redacted_list = [username, password]
     redacted_print_std = RedactedPrint(STDOutOptions.STDOUT, redacted_list)
     redacted_print_err = RedactedPrint(STDOutOptions.ERROR, redacted_list)

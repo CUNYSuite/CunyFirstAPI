@@ -44,7 +44,7 @@ class RedactedFile:
         self.redacted_list = redacted_list
 
     # provide everything a file has
-    def __getattr__(self, attr_name):  
+    def __getattr__(self, attr_name):
         return self.origOut.__getattribute__(attr_name)
 
     def write(self, text):
@@ -55,4 +55,3 @@ def redact_text(text, redacted_list):
     for word in redacted_list:
         text = re.sub(word, "REDACTED", text)
     return text
-    

@@ -217,19 +217,19 @@ class Class_Search_Action(ActionObject):
 
             for row in rows:
                 row_info = {
-                    'subject' : _subject,
-                    'course_number' : _course_number,
-                    'title' : _title,
-                    'description' : ''.join(row.xpath('../../../../following-sibling::tr//span[contains(@id,"DERIVED_CLSRCH_DESCRLONG$")]/text()')),
-                    'class_number' : ''.join(row.xpath('.//a[contains(@id,"MTG_CLASS_NBR$")]/text()')).strip(),
-                    'section' : ''.join(row.xpath('.//a[contains(@id,"MTG_CLASSNAME$")]/text()')).strip(),
-                    'days_and_times' : ''.join(row.xpath('.//span[contains(@id,"MTG_DAYTIME$")]/text()')).strip(),
-                    'room' : ''.join(row.xpath('.//span[contains(@id,"MTG_ROOM$")]/text()')).strip(),
-                    'instructor' : ''.join(row.xpath('.//span[contains(@id,"MTG_INSTR$")]/text()')).strip(),
-                    'meeting_dates' : ''.join(row.xpath('.//span[contains(@id,"MTG_TOPIC$")]/text()')).strip(),
-                    'status' : re.search(r'OPEN|CLOSED|WAITLIST',''.join(row.xpath('.//img[@class="SSSIMAGECENTER"]/@src'))).group(0).strip(),
-                    'bookstore_link' : '',#''.join(row.xpath('.//a[contains(@id,"MTG_INSTR$")]/text()'))
-                    'mode_of_instruction' : ''.join(row.xpath('.//span[contains(@id,"INSTRUCT_MODE_DESCR$")]/text()')).strip()
+                    'subject': _subject,
+                    'course_number': _course_number,
+                    'title': _title,
+                    'description': ''.join(row.xpath('../../../../following-sibling::tr//span[contains(@id,"DERIVED_CLSRCH_DESCRLONG$")]/text()')),
+                    'class_number': ''.join(row.xpath('.//a[contains(@id,"MTG_CLASS_NBR$")]/text()')).strip(),
+                    'section': ''.join(row.xpath('.//a[contains(@id,"MTG_CLASSNAME$")]/text()')).strip(),
+                    'days_and_times': ''.join(row.xpath('.//span[contains(@id,"MTG_DAYTIME$")]/text()')).strip(),
+                    'room': ''.join(row.xpath('.//span[contains(@id,"MTG_ROOM$")]/text()')).strip(),
+                    'instructor': ''.join(row.xpath('.//span[contains(@id,"MTG_INSTR$")]/text()')).strip(),
+                    'meeting_dates': ''.join(row.xpath('.//span[contains(@id,"MTG_TOPIC$")]/text()')).strip(),
+                    'status': re.search(r'OPEN|CLOSED|WAITLIST',''.join(row.xpath('.//img[@class="SSSIMAGECENTER"]/@src'))).group(0).strip(),
+                    'bookstore_link': '',    #''.join(row.xpath('.//a[contains(@id,"MTG_INSTR$")]/text()'))
+                    'mode_of_instruction': ''.join(row.xpath('.//span[contains(@id,"INSTRUCT_MODE_DESCR$")]/text()')).strip()
                 }
 
                 #pprint(row_info)
