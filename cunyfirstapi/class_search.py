@@ -188,6 +188,9 @@ class Class_Search_Action(ActionObject):
         if days_of_week is None:
             days_of_week = []
 
+        if len(subject) > 8:
+            raise ValueError(f"The value for the field \"Subject\" was over by {len(subject)-8} "+
+                "characters. Reduce to 8 or fewer characters.")
         days_of_week = set(map(lambda x: x.lower(), days_of_week))
 
         headers = {
@@ -287,6 +290,16 @@ class Class_Search_Action(ActionObject):
             #print(re.search(r'<span  class=\'SSSMSGWARNINGTEXT\'.*</span>', response.text).group(0))
             tree = html.fromstring(re.search(r'<span  class=\'SSSMSGALERTTEXT\'.*</span>', response.text).group(0))
             warning = ''.join(tree.xpath('//span[@class="SSSMSGALERTTEXT"]/text()'))
+            return {
+                'results': result,
+                'success' : False,
+                'reason' : warning
+            }
+
+        if re.search(r'processing_win0\(0,3000\);addMsg\("(.*)"\);playMsg\(\);', response.text):
+            tree = html.fromstring(re.search(r'processing_win0\(0,3000\);addMsg\("(.*)"\);playMsg\(\);', 
+                response.text).group(1))
+            warning = ''.join(tree.xpath('//span[@class="popupText"]/text()'))
             return {
                 'results': result,
                 'success' : False,

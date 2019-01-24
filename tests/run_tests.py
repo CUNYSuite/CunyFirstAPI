@@ -71,12 +71,31 @@ class TestClassSearch(unittest.TestCase):
                 open_classes_only=False, mode_of_instruction='H')
             test3 = len(result3['results']) > 0
 
+            # test last name match and last name
             loc = api.move_to(Locations.class_search).location()
             result4 = loc.action().submit_search(institution='QNS01', term='1192', course_number='1',
                 course_number_match='G', instructor_last_name_match='B', 
                 instructor_last_name='Obren', open_classes_only=False)
             test4 = len(result4['results']) > 0
-            self.assertTrue(test1 and test2 and test3 and test4)
+
+            # test invalid subject value by length
+            loc = api.move_to(Locations.class_search).location()
+            result5 = loc.action().submit_search(institution='QNS01', term='1192', subject='FAKESUBJECT')
+            test5 = len(result5['results']) == 0
+
+            # test invalid time
+            loc = api.move_to(Locations.class_search).location()
+            result6 = loc.action().submit_search(institution='QNS01', term='1192', 
+                course_number='111', subject='CSCI', meeting_start_time='25:00AM', parsed=True)
+            test6 = len(result6['results']) == 0
+
+
+            self.assertTrue(test1)
+            self.assertTrue(test2)
+            self.assertTrue(test3)
+            self.assertTrue(test4)
+            self.assertTrue(test5)
+            self.assertTrue(test6)
 
 
 def get_username_password():
