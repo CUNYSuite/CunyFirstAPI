@@ -75,3 +75,8 @@ CUNY_FIRST_TRANSCRIPT_REQUEST_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcpr
     + '&EMPLID=&TargetFrameName=None'
 CUNY_FIRST_MY_ACADEMICS_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS' \
     + '/c/SA_LEARNER_SERVICES.SSS_MY_ACAD.GBL?Page=SSS_MY_ACAD&Action=U&ExactKeys=Y&TargetFrameName=None'
+CUNY_FIRST_STUDENT_CENTER_BASE_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS' \
+    + '/c/SA_LEARNER_SERVICES.SSS_STUDENT_CENTER.GBL'
+
+CUNY_FIRST_CLASS_SEARCH_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS' \
+    + '/c/SA_LEARNER_SERVICES.CLASS_SEARCH.GBL?Page=SSR_CLSRCH_ENTRY&Action=U&ExactKeys=Y&TargetFrameName=None'
