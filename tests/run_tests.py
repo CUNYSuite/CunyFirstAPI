@@ -80,8 +80,12 @@ class TestClassSearch(unittest.TestCase):
 
             # test invalid subject value by length
             loc = api.move_to(Locations.class_search).location()
-            result5 = loc.action().submit_search(institution='QNS01', term='1192', subject='FAKESUBJECT', course_number='111')
-            test5 = len(result5['results']) == 0
+            try:
+                result5 = loc.action().submit_search(institution='QNS01', term='1192', subject='FAKESUBJECT', course_number='111')
+                self.assertTrue(False)
+            except ValueError:
+                self.assertTrue(True)
+            
 
             # test invalid time
             loc = api.move_to(Locations.class_search).location()
@@ -94,7 +98,6 @@ class TestClassSearch(unittest.TestCase):
             self.assertTrue(test2)
             self.assertTrue(test3)
             self.assertTrue(test4)
-            self.assertTrue(test5)
             self.assertTrue(test6)
 
 
