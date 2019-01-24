@@ -14,9 +14,9 @@ from lxml import html, etree
 from bs4 import BeautifulSoup
 from lxml import etree
 from os.path import join
-from . import constants
-from .helper import get_semester
-from .actions_locations import ActionObject, Location
+from cunyfirstapi import constants
+from cunyfirstapi.helper import get_semester
+from cunyfirstapi.actions_locations import ActionObject, Location
 
 class Student_Grades(Location):
     def move(self):
@@ -49,20 +49,19 @@ class Student_Grades(Location):
             return None
 
     def action(self):
-        return Student_Grades_Action(self._session, self._response)
+        return Student_Grades_Action(self)
         
 
 class Student_Grades_Action(ActionObject):
 
-    def __init__(self, session, response):
-        self._session = session
-        self._response = response
+    def __init__(self, location):
+        self._location = location
 
     def location(self):
-        return Student_Center()
+        return self._location
 
     def grades(self):
-        tree = BeautifulSoup(self._response.text, 'lxml')
+        tree = BeautifulSoup(self._location._response.text, 'lxml')
         good_html = tree.prettify()
         soup = BeautifulSoup(good_html, 'html.parser')
         result = []

@@ -9,8 +9,8 @@ Copyright: Copyright 2019, Ehud Adler
 License: MIT
 '''
 ###***********************************###
-from . import constants
-from .actions_locations import ActionObject, Location
+from cunyfirstapi import constants
+from cunyfirstapi.actions_locations import ActionObject, Location
 
 class Student_Center(Location):
     def move(self, data=None):

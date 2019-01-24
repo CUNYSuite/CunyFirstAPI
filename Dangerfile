@@ -15,7 +15,7 @@ fail("fit left in tests") if `grep -r fit specs/ `.length > 1
 forgot_tests = !git.modified_files.include?("/tests/run_tests.py")
 
 if forgot_tests and not declared_trivial
-	warn("It appears that you forgot to add a Unit Test to the test file.\n Please add a test and upload the new version.\n The test file can currently be found at: cunyfirstapi/tests/tests.py")
+	warn("It appears that you forgot to add a Unit Test to the test file.\n Please add a test and upload the new version.\n The test file can currently be found at: tests/run_tests.py")
 end
 
 

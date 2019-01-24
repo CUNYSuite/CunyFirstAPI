@@ -12,9 +12,9 @@ License: MIT
 from lxml import html, etree
 from os.path import join
 import re
-from . import constants
-from .helper import get_semester
-from .actions_locations import ActionObject, Location
+from cunyfirstapi import constants
+from cunyfirstapi.helper import get_semester
+from cunyfirstapi.actions_locations import ActionObject, Location
 
 class Transcript_Page(Location):
     def move(self):
@@ -60,29 +60,28 @@ class Transcript_Page(Location):
         return self
 
     def action(self):
-        return Transcript_Page_Action(self._session, self._college_code)
+        return Transcript_Page_Action(self)
         
 
 class Transcript_Page_Action(ActionObject):
 
-    def __init__(self, session, college_code):
-        self._session = session
-        self._college_code = college_code
+    def __init__(self, location):
+        self._location = location
 
     def location(self):
-        return Transcript_Page()
+        return self._location
 
     def download(self, alt_college_code=None):
         if data is None:
             data = {'ICElementNum': '0'}
 
-        college_code = self._college_code
+        college_code = self.location()._college_code
 
         if alt_college_code:
             college_code = alt_college_code
 
         url = constants.CUNY_FIRST_TRANSCRIPT_REQUEST_URL
-        r = self._session.get(url)
+        r = self.location()._session.get(url)
         tree = html.fromstring(r.text)
 
         data['ICAJAX'] = '1'
@@ -93,22 +92,22 @@ class Transcript_Page_Action(ActionObject):
         data['ICYPos'] ='115'
 
         # tell it we picked that college
-        r = self._session.post(url, data=data)
+        r = self.location()._session.post(url, data=data)
 
         # tell it we selected "Student Unofficial Transcript"
         data['ICStateNum'] = '6'
-        r = self._session.post(url, data=data)
+        r = self.location()._session.post(url, data=data)
 
         # submit our final request to view report
         data['ICStateNum'] = '7'
         data['ICAction'] = 'GO'
         data['DERIVED_SSTSRPT_TSCRPT_TYPE3'] = 'STDNT'
 
-        r = self._session.post(url, data=data)
+        r = self.location()._session.post(url, data=data)
 
         # the response contains the url of the transcript. extract with regex
         pdfurl = re.search(r'window.open\(\'(https://hrsa\.cunyfirst\.cuny\.edu/psc/.*\.pdf)',r.text).group(1)
 
         # get the resource at the extracted url, which is the pdf of the transcript
-        r = self._session.get(pdfurl)
+        r = self.location()._session.get(pdfurl)
         return r

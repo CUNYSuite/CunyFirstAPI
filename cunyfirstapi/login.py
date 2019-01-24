@@ -12,7 +12,7 @@ License: MIT
 import requests
 import re
 from lxml import html
-from . import constants
+from cunyfirstapi import constants
 
 def is_logged_in(session):
 
@@ -74,6 +74,9 @@ def login(username, password):
         data=data
     )
     response = new_session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
+    tree = html.fromstring(response.text)
+    new_session.icsid = ''.join(tree.xpath('//*[@id="ICSID"]/@value'))
+
     return new_session
 
     def logout(session):
