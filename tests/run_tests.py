@@ -80,7 +80,7 @@ class TestClassSearch(unittest.TestCase):
 
             # test invalid subject value by length
             loc = api.move_to(Locations.class_search).location()
-            result5 = loc.action().submit_search(institution='QNS01', term='1192', subject='FAKESUBJECT')
+            result5 = loc.action().submit_search(institution='QNS01', term='1192', subject='FAKESUBJECT', course_number='111')
             test5 = len(result5['results']) == 0
 
             # test invalid time
