@@ -41,10 +41,11 @@ class Transcript_Page(Location):
         data['DERIVED_SSS_SCL_SSS_MORE_PROFILE'] = '9999'
 
         # set url to student center menu
-        self.to_student_center(data=data)
+        #self.to_student_center(data=data)
+        self._session.get(url=constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL, data=data)
        
         # navigate to the academics page
-        self._session.get(constants.CUNY_FIRST_MY_ACADEMICS_URL)
+        self._session.get(url=constants.CUNY_FIRST_MY_ACADEMICS_URL)
         
         # modify form for next stage
         data['ICStateNum'] = '3'
