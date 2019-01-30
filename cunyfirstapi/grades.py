@@ -72,7 +72,7 @@ class Student_Grades_Action(ActionObject):
                 'table', attrs={'class': "PSLEVEL1GRIDWBO"}
             )[0]  # get term table
         except BaseException:
-            table = None
+            raise ValueError('Could not find grades table')
 
         if table is not None:
             row_marker = 0
