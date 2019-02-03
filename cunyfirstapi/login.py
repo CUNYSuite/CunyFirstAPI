@@ -51,10 +51,9 @@ def login(username, password):
     response = new_session.get(constants.CUNY_FIRST_STUDENT_CENTER_URL)
     tree = html.fromstring(response.text)
 
-    try:
-        encquery = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
-    except IndexError:
-        return None
+    # remember to catch this with IndexError
+    encquery = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
+
 
     data = {'enc_post_data': encquery}
     response = new_session.post(
@@ -63,10 +62,9 @@ def login(username, password):
     )
     tree = html.fromstring(response.text)
 
-    try:
-        encreply = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
-    except IndexError:
-        return None
+    # remember to catch this with IndexError
+    encreply = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
+
 
     data = {'enc_post_data': encreply}
     new_session.post(
