@@ -13,7 +13,7 @@ from cunyfirstapi import constants
 from cunyfirstapi.actions_locations import ActionObject, Location
 
 class Student_Center(Location):
-    def move(self, data=None):
+    def move(self, data=None, headers=None):
         if data is None:
             request_method = self._session.get
         else:

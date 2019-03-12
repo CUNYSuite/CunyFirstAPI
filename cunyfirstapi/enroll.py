@@ -1,0 +1,235 @@
+###***********************************###
+'''
+CUNYFirstAPI
+File: student_center.py
+Author: Ehud Adler
+Core Maintainers: Ehud Adler, Akiva Sherman,
+Yehuda Moskovits
+Copyright: Copyright 2019, Ehud Adler
+License: MIT
+'''
+###***********************************###
+from cunyfirstapi import constants
+from cunyfirstapi.actions_locations import ActionObject, Location
+from lxml import html
+import re
+
+class Enrollment(Location):
+    def move(self):
+        headers = {
+            'Origin': 'https://hrsa.cunyfirst.cuny.edu',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': '*/*',
+            'Referer': constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL,
+            'Connection': 'keep-alive',
+        }
+        payload = { 'ICAJAX': '1',
+                    'ICNAVTYPEDROPDOWN': '1',
+                    'ICType': 'Panel',
+                    'ICElementNum': '0',
+                    #'ICStateNum': '6',
+                    'ICAction': 'DERIVED_SSS_SCR_SSS_LINK_ANCHOR3',
+                    'ICXPos': '0',
+                    'ICYPos': '180',
+                    'ResponsetoDiffFrame': '-1',
+                    'TargetFrameName': 'None',
+                    'FacetPath': 'None',
+                    'ICFocus': '',
+                    'ICSaveWarningFilter': '0',
+                    'ICChanged': '-1',
+                    'ICAutoSave': '0',
+                    'ICResubmit': '0',
+                    'ICSID': self._session.icsid,
+                    'ICActionPrompt': 'false',
+                    'ICBcDomData': '',
+                    'ICFind': '',
+                    'ICAddCount': '',
+                    'ICAPPCLSDATA': '',
+                    'DERIVED_SSS_SCL_SSS_MORE_ACADEMICS': '9999',
+                    'DERIVED_SSS_SCL_SSS_MORE_FINANCES': '9999',
+                    #'CU_SF_SS_INS_WK_BUSINESS_UNIT': 'QNS01',
+                    'DERIVED_SSS_SCL_SSS_MORE_PROFILE': '9999',
+                    'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
+                    'ptus_dbname': 'CNYHCPRD',
+                    'ptus_portal': 'EMPLOYEE',
+                    'ptus_node': 'HRMS',
+                    'ptus_workcenterid': ''}
+        
+        #pprint(self._session.cookies.get_dict())
+
+        self._response = self._session.post(url=constants.CUNY_FIRST_STUDENT_CENTER_BASE_URL, 
+            data=payload, 
+            headers=headers)
+        #print(self._response.text)
+        self._response = self._session.get(url=constants.CUNY_FIRST_ENROLLMENT_ADD_URL, 
+            headers=headers)
+        #print(self._response.text)
+
+        return self
+
+    def action(self):
+        return Enrollment_Action(self)
+        
+
+class Enrollment_Action(ActionObject):
+    def __init__(self, location):
+        self._location = location
+
+    def location(self):
+        return self._location #Class_Search()
+
+    def add_course_to_cart(self, term, class_number, lab_number=None, academic_career='UGRD', wait_list=False, permission_number=''):
+        #class_number = 1265
+        payload = {
+          'ICAJAX': '1',
+          'ICNAVTYPEDROPDOWN': '0',
+          'ICType': 'Panel',
+          'ICElementNum': '0',
+          'ICAction': 'DERIVED_SSS_SCT_SSR_PB_GO',
+          'ResponsetoDiffFrame': '-1',
+          'TargetFrameName': 'None',
+          'FacetPath': 'None',
+          'ICFocus': '',
+          'ICSaveWarningFilter': '0',
+          'ICChanged': '-1',
+          'ICAutoSave': '0',
+          'ICResubmit': '0',
+          'ICSID': self.location()._session.icsid,
+          'ICActionPrompt': 'false',
+          'ICFind': '',
+          'ICAddCount': '',
+          'ICAPPCLSDATA': '',
+          'SSR_DUMMY_RECV1$sels$1$$0': '1',
+          'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
+          'ptus_dbname': 'CNYHCPRD',
+          'ptus_portal': 'EMPLOYEE',
+          'ptus_node': 'HRMS',
+          'ptus_workcenterid': '',
+          'ptus_componenturl': ''
+        }
+        r = self.location()._session.post(url=constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+        #print(r.text)
+
+        params = {
+            'ACAD_CAREER': academic_career,
+            'INSTITUTION': self.location()._college_code,
+            'STRM': term
+        }
+        r = self.location()._session.get(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, params=params)
+        #print(r.text)
+
+        payload = {
+          'ICAJAX': '1',
+          'ICNAVTYPEDROPDOWN': '0',
+          'ICType': 'Panel',
+          'ICElementNum': '0',
+          'ICAction': 'DERIVED_REGFRM1_SSR_PB_ADDTOLIST2$9$',
+          'ResponsetoDiffFrame': '-1',
+          'TargetFrameName': 'None',
+          'FacetPath': 'None',
+          'ICFocus': '',
+          'ICSaveWarningFilter': '0',
+          'ICChanged': '-1',
+          'ICAutoSave': '0',
+          'ICResubmit': '0',
+          'ICSID': self.location()._session.icsid,
+          'ICActionPrompt': 'false',
+          'ICBcDomData': 'undefined',
+          'ICFind': '',
+          'ICAddCount': '',
+          'ICAPPCLSDATA': '',
+          'DERIVED_REGFRM1_CLASS_NBR': str(class_number),
+          'DERIVED_REGFRM1_SSR_CLS_SRCH_TYPE$249$': '06',
+          'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
+          'ptus_dbname': 'CNYHCPRD',
+          'ptus_portal': 'EMPLOYEE',
+          'ptus_node': 'HRMS',
+          'ptus_workcenterid': '',
+          'ptus_componenturl': ''
+        }
+
+        r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+
+        if lab_number is not None:
+            table_html = re.search(r'<table dir=\'ltr\'(.|\n)*?</table>', r.text).group(0)
+            tree = html.fromstring(table_html)
+            position = -1
+            for index, row in enumerate(tree.xpath('.//tr')):
+                print(''.join(row.xpath('./td[2]//text()')).strip())
+                print(lab_number,'\n')
+                if ''.join(row.xpath('./td[2]//text()')).strip() == str(lab_number):
+                    position = index 
+                    break
+            if position < 0:
+                raise ValueError('Lab may be on next page. Send message to developer to fix')
+
+            payload = {
+              'ICAJAX': '1',
+              'ICNAVTYPEDROPDOWN': '0',
+              'ICType': 'Panel',
+              'ICElementNum': '0',
+              'ICAction': 'DERIVED_CLS_DTL_NEXT_PB',
+              'ResponsetoDiffFrame': '-1',
+              'TargetFrameName': 'None',
+              'FacetPath': 'None',
+              'ICFocus': '',
+              'ICSaveWarningFilter': '0',
+              'ICChanged': '-1',
+              'ICAutoSave': '0',
+              'ICResubmit': '0',
+              'ICSID': self.location()._session.icsid,
+              'ICActionPrompt': 'false',
+              'ICBcDomData': 'undefined',
+              'ICFind': '',
+              'ICAddCount': '',
+              'ICAPPCLSDATA': '',
+             f'SSR_CLS_TBL_R1$sels${position}$$0': str(position),
+              'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
+              'ptus_dbname': 'CNYHCPRD',
+              'ptus_portal': 'EMPLOYEE',
+              'ptus_node': 'HRMS',
+              'ptus_workcenterid': '',
+              'ptus_componenturl': ''
+            }
+
+            r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+
+
+        payload = {
+          'ICAJAX': '1',
+          'ICNAVTYPEDROPDOWN': '0',
+          'ICType': 'Panel',
+          'ICElementNum': '0',
+          'ICAction': 'DERIVED_CLS_DTL_NEXT_PB$280$',
+          'ResponsetoDiffFrame': '-1',
+          'TargetFrameName': 'None',
+          'FacetPath': 'None',
+          'ICFocus': '',
+          'ICSaveWarningFilter': '0',
+          'ICChanged': '-1',
+          'ICAutoSave': '0',
+          'ICResubmit': '0',
+          'ICSID': self.location()._session.icsid,
+          'ICActionPrompt': 'false',
+          'ICBcDomData': 'undefined',
+          'ICFind': '',
+          'ICAddCount': '',
+          'ICAPPCLSDATA': '',
+          'DERIVED_CLS_DTL_WAIT_LIST_OKAY$125$$chk': 'Y' if wait_list else 'N',
+          'DERIVED_CLS_DTL_CLASS_PRMSN_NBR$118$': str(permission_number),
+          'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
+          'ptus_dbname': 'CNYHCPRD',
+          'ptus_portal': 'EMPLOYEE',
+          'ptus_node': 'HRMS',
+          'ptus_workcenterid': '',
+          'ptus_componenturl': ''
+        }
+
+        r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+
+
+        return r
+        

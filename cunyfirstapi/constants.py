@@ -80,3 +80,7 @@ CUNY_FIRST_STUDENT_CENTER_BASE_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcp
 
 CUNY_FIRST_CLASS_SEARCH_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS' \
     + '/c/SA_LEARNER_SERVICES.CLASS_SEARCH.GBL?Page=SSR_CLSRCH_ENTRY&Action=U&ExactKeys=Y&TargetFrameName=None'
+CUNY_FIRST_ENROLLMENT_ADD_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS' \
+    + '/c/SA_LEARNER_SERVICES.SSR_SSENRL_CART.GBL?Page=SSR_SSENRL_CART'
+CUNY_FIRST_ENROLLMENT_CART_BASE_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS'\
+    + '/c/SA_LEARNER_SERVICES.SSR_SSENRL_CART.GBL?Page=SSR_SSENRL_CART'
