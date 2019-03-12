@@ -64,7 +64,7 @@ class Enrollment(Location):
             data=payload, 
             headers=headers)
         #print(self._response.text)
-        self._response = self._session.get(url=constants.CUNY_FIRST_ENROLLMENT_ADD_URL, 
+        self._response = self._session.get(url=constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, 
             headers=headers)
         #print(self._response.text)
 
@@ -110,7 +110,7 @@ class Enrollment_Action(ActionObject):
           'ptus_workcenterid': '',
           'ptus_componenturl': ''
         }
-        r = self.location()._session.post(url=constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+        r = self.location()._session.post(url=constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
         #print(r.text)
 
         params = {
@@ -151,7 +151,7 @@ class Enrollment_Action(ActionObject):
           'ptus_componenturl': ''
         }
 
-        r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+        r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
 
         if lab_number is not None:
             table_html = re.search(r'<table dir=\'ltr\'(.|\n)*?</table>', r.text).group(0)
@@ -195,7 +195,7 @@ class Enrollment_Action(ActionObject):
               'ptus_componenturl': ''
             }
 
-            r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+            r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
 
 
         payload = {
@@ -228,8 +228,106 @@ class Enrollment_Action(ActionObject):
           'ptus_componenturl': ''
         }
 
-        r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+        r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
 
 
         return r
         
+
+    def enroll_all_courses(self, term=None, academic_career='UGRD'):
+        if term is not None:
+            params = {
+                'ACAD_CAREER': academic_career,
+                'INSTITUTION': self.location()._college_code,
+                'STRM': term
+            }
+            r = self.location()._session.get(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, params=params)
+        payload = {
+          'ICAJAX': '1',
+          'ICNAVTYPEDROPDOWN': '1',
+          'ICType': 'Panel',
+          'ICElementNum': '1',
+          'ICAction': 'DERIVED_REGFRM1_LINK_ADD_ENRL$82$',
+          'ResponsetoDiffFrame': '-1',
+          'TargetFrameName': 'None',
+          'FacetPath': 'None',
+          'ICFocus': '',
+          'ICSaveWarningFilter': '0',
+          'ICChanged': '-1',
+          'ICAutoSave': '0',
+          'ICResubmit': '0',
+          'ICSID': self.location()._session.icsid,
+          'ICActionPrompt': 'false',
+          'ICBcDomData': '',
+          'ICFind': '',
+          'ICAddCount': '',
+          'ICAPPCLSDATA': '',
+          'DERIVED_REGFRM1_CLASS_NBR': '',
+          'DERIVED_REGFRM1_SSR_CLS_SRCH_TYPE$249$': '06',
+          'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
+          'ptus_dbname': 'CNYHCPRD',
+          'ptus_portal': 'EMPLOYEE',
+          'ptus_node': 'HRMS',
+          'ptus_workcenterid': '',
+          'ptus_componenturl': 'https://hrsa.cunyfirst.cuny.edu/psp/cnyhcprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_CART.GBL'
+        }
+
+        r = self.location()._session.post('https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_CART.GBL', data=payload)
+        #print(r.text)
+        enroll_request_url = re.search(r'document\.location=\'(.*)\'', r.text).group(1)
+
+        r = self.location()._session.get(enroll_request_url)
+
+        payload = {
+          'ICAJAX': '1',
+          'ICNAVTYPEDROPDOWN': '1',
+          'ICType': 'Panel',
+          'ICElementNum': '1',
+          'ICAction': 'DERIVED_REGFRM1_SSR_PB_SUBMIT',
+          'ResponsetoDiffFrame': '-1',
+          'TargetFrameName': 'None',
+          'FacetPath': 'None',
+          'ICFocus': '',
+          'ICSaveWarningFilter': '0',
+          'ICChanged': '-1',
+          'ICAutoSave': '0',
+          'ICResubmit': '0',
+          'ICSID': self.location()._session.icsid,
+          'ICActionPrompt': 'false',
+          'ICBcDomData': '',
+          'ICFind': '',
+          'ICAddCount': '',
+          'ICAPPCLSDATA': '',
+          'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
+          'ptus_dbname': 'CNYHCPRD',
+          'ptus_portal': 'EMPLOYEE',
+          'ptus_node': 'HRMS',
+          'ptus_workcenterid': '',
+          'ptus_componenturl': ''
+        }
+
+        r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_ADD_URL, data=payload)
+
+        table_html = re.search(r'<table border=\'1\' cellspacing=\'0\' class=\'PSLEVEL1GRIDWBO\'(.|\n)*?</table>', r.text).group(0)
+        tree = html.fromstring(table_html)
+        results = []
+        for row in tree.xpath('./tr[position()>1]'):
+
+            _class = ''.join(row.xpath('./td[1]//text()'))
+            message = ''.join(row.xpath('./td[2]//text()'))
+
+            if ''.join(row.xpath('./td[3]//img/@alt')) == 'Error':
+                status = 'error'
+            else:
+                status = 'success'
+
+            result = {
+                'class': re.sub(r'(\xa0|\s)+',' ',_class.strip()),
+                'message': message.strip(),
+                'status': status
+            }
+
+            results.append(result)
+
+        return result
+
