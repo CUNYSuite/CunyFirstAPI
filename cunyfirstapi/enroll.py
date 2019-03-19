@@ -316,18 +316,18 @@ class Enrollment_Action(ActionObject):
             _class = ''.join(row.xpath('./td[1]//text()'))
             message = ''.join(row.xpath('./td[2]//text()'))
 
+            success = True
+
             if ''.join(row.xpath('./td[3]//img/@alt')) == 'Error':
-                status = 'error'
-            else:
-                status = 'success'
+                success = False
 
             result = {
                 'class': re.sub(r'(\xa0|\s)+',' ',_class.strip()),
                 'message': message.strip(),
-                'status': status
+                'success': success
             }
 
             results.append(result)
 
-        return result
+        return results
 
