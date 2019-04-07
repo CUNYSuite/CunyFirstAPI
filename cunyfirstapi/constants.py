@@ -84,3 +84,7 @@ CUNY_FIRST_ENROLLMENT_ADD_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EM
     + '/c/SA_LEARNER_SERVICES.SSR_SSENRL_ADD.GBL'
 CUNY_FIRST_ENROLLMENT_CART_BASE_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS'\
     + '/c/SA_LEARNER_SERVICES.SSR_SSENRL_CART.GBL?Page=SSR_SSENRL_CART'
+CUNY_FIRST_ENROLLMENT_DROP_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS' \
+    + '/c/SA_LEARNER_SERVICES.SSR_SSENRL_DROP.GBL'
+CUNY_FIRST_ENROLLMENT_SWAP_URL = 'https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS' \
+    + '/c/SA_LEARNER_SERVICES.SSR_SSENRL_SWAP.GBL'
