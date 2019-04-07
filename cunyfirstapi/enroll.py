@@ -111,7 +111,7 @@ class Enrollment_Action(ActionObject):
           'ptus_componenturl': ''
         }
         r = self.location()._session.post(url=constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
-        #print(r.text)
+        # print(r.text)
 
         params = {
             'ACAD_CAREER': academic_career,
@@ -119,7 +119,7 @@ class Enrollment_Action(ActionObject):
             'STRM': term
         }
         r = self.location()._session.get(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, params=params)
-        #print(r.text)
+        # print(r.text)
 
         payload = {
           'ICAJAX': '1',
@@ -197,7 +197,6 @@ class Enrollment_Action(ActionObject):
 
             r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
 
-
         payload = {
           'ICAJAX': '1',
           'ICNAVTYPEDROPDOWN': '0',
@@ -230,10 +229,8 @@ class Enrollment_Action(ActionObject):
 
         r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
 
-
         return r
         
-
     def enroll_all_courses(self, term=None, academic_career='UGRD'):
         if term is not None:
             params = {
@@ -273,7 +270,7 @@ class Enrollment_Action(ActionObject):
         }
 
         r = self.location()._session.post('https://hrsa.cunyfirst.cuny.edu/psc/cnyhcprd/EMPLOYEE/HRMS/c/SA_LEARNER_SERVICES.SSR_SSENRL_CART.GBL', data=payload)
-        #print(r.text)
+        # print(r.text)
         enroll_request_url = re.search(r'document\.location=\'(.*)\'', r.text).group(1)
 
         r = self.location()._session.get(enroll_request_url)
@@ -322,7 +319,7 @@ class Enrollment_Action(ActionObject):
                 success = False
 
             result = {
-                'class': re.sub(r'(\xa0|\s)+',' ',_class.strip()),
+                'class': re.sub(r'(\xa0|\s)+', ' ', _class.strip()),
                 'message': message.strip(),
                 'success': success
             }
@@ -330,4 +327,3 @@ class Enrollment_Action(ActionObject):
             results.append(result)
 
         return results
-
