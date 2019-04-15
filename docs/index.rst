@@ -21,10 +21,14 @@ CUNYFirstAPI: Automate College
 	Transcript_Page
 
 
+
 .. toctree::
 	:maxdepth: 2
 	:glob:
 	:caption: Action Objects
 
+	Class_Search_Action
 	Enrollment_Action
+	Student_Center_Action
 	Student_Grades_Action
+	Transcript_Page_Action
