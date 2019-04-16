@@ -1,6 +1,8 @@
 CUNYFirstAPI: Automate College
 ==============================
 
+text stuff I suppose?
+
 .. _user-docs:
 
 .. toctree::
