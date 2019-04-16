@@ -3,14 +3,12 @@ CUNYFirstAPI: Automate College
 
 .. toctree::
 	:maxdepth: 2
-	:glob:
 	:caption: The API Object
 
 	CUNYFirstAPI
 
 .. toctree::
 	:maxdepth: 2
-	:glob:
 	:caption: Location Objects
 
 	Locations
@@ -24,7 +22,6 @@ CUNYFirstAPI: Automate College
 
 .. toctree::
 	:maxdepth: 2
-	:glob:
 	:caption: Action Objects
 
 	Class_Search_Action
