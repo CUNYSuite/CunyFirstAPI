@@ -10,6 +10,7 @@ Welcome to CUNYFirstAPI's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   CUNYFirstAPI
 
 
 Indices and tables
