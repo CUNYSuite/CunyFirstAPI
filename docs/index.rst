@@ -1,31 +1,34 @@
 CUNYFirstAPI: Automate College
 ==============================
 
-.. toctree::
-	:maxdepth: 2
-	:caption: The API Object
-
-	CUNYFirstAPI
+.. _user-docs:
 
 .. toctree::
-	:maxdepth: 2
-	:caption: Location Objects
+   :maxdepth: 2
+   :caption: The API Object
 
-	Locations
-	Class_Search
-	Enrollment
-	Student_Grades
-	Student_Center
-	Transcript_Page
-
-
+   CUNYFirstAPI
 
 .. toctree::
-	:maxdepth: 2
-	:caption: Action Objects
+   :maxdepth: 2
+   :caption: Location Objects
 
-	Class_Search_Action
-	Enrollment_Action
-	Student_Center_Action
-	Student_Grades_Action
-	Transcript_Page_Action
+   Locations
+   Class_Search
+   Enrollment
+   Student_Grades
+   Student_Center
+   Transcript_Page
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Action Objects
+
+   Class_Search_Action
+   Enrollment_Action
+   Student_Center_Action
+   Student_Grades_Action
+   Transcript_Page_Action
+
+next section I guess?
+=====================
