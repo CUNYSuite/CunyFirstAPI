@@ -1,37 +1,20 @@
-CUNYFirstAPI: Automate College
-==============================
+.. CUNYFirstAPI documentation master file, created by
+   sphinx-quickstart on Mon Apr 15 21:35:34 2019.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-text stuff I suppose?
-
-Use this API
-------------
-
-.. toctree::
-   :maxdepth: 2
-   :caption: The API Object
-
-   CUNYFirstAPI
+Welcome to CUNYFirstAPI's documentation!
+========================================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Location Objects
+   :caption: Contents:
 
-   Locations
-   Class_Search
-   Enrollment
-   Student_Grades
-   Student_Center
-   Transcript_Page
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Action Objects
 
-   Class_Search_Action
-   Enrollment_Action
-   Student_Center_Action
-   Student_Grades_Action
-   Transcript_Page_Action
+Indices and tables
+==================
 
-next section I guess?
-=====================
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
