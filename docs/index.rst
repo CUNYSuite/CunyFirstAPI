@@ -3,6 +3,8 @@ CUNYFirstAPI: Automate College
 
 text stuff I suppose?
 
+Use this API
+------------
 
 .. toctree::
    :maxdepth: 2
