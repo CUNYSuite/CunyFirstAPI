@@ -50,23 +50,19 @@ class Enrollment(Location):
                     'ICAPPCLSDATA': '',
                     'DERIVED_SSS_SCL_SSS_MORE_ACADEMICS': '9999',
                     'DERIVED_SSS_SCL_SSS_MORE_FINANCES': '9999',
-                    #'CU_SF_SS_INS_WK_BUSINESS_UNIT': 'QNS01',
                     'DERIVED_SSS_SCL_SSS_MORE_PROFILE': '9999',
                     'ptus_defaultlocalnode': 'PSFT_CNYHCPRD',
                     'ptus_dbname': 'CNYHCPRD',
                     'ptus_portal': 'EMPLOYEE',
                     'ptus_node': 'HRMS',
                     'ptus_workcenterid': ''}
-        
-        #pprint(self._session.cookies.get_dict())
 
         self._response = self._session.post(url=constants.CUNY_FIRST_STUDENT_CENTER_BASE_URL, 
             data=payload, 
             headers=headers)
-        #print(self._response.text)
+
         self._response = self._session.get(url=constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, 
             headers=headers)
-        #print(self._response.text)
 
         return self
 
@@ -79,10 +75,9 @@ class Enrollment_Action(ActionObject):
         self._location = location
 
     def location(self):
-        return self._location #Class_Search()
+        return self._location 
 
     def add_course_to_cart(self, term, class_number, lab_number=None, academic_career='UGRD', wait_list=False, permission_number=''):
-        #class_number = 1265
         payload = {
           'ICAJAX': '1',
           'ICNAVTYPEDROPDOWN': '0',
@@ -111,7 +106,6 @@ class Enrollment_Action(ActionObject):
           'ptus_componenturl': ''
         }
         r = self.location()._session.post(url=constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
-        # print(r.text)
 
         params = {
             'ACAD_CAREER': academic_career,
@@ -119,7 +113,6 @@ class Enrollment_Action(ActionObject):
             'STRM': term
         }
         r = self.location()._session.get(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, params=params)
-        # print(r.text)
 
         payload = {
           'ICAJAX': '1',
@@ -158,11 +151,8 @@ class Enrollment_Action(ActionObject):
             tree = html.fromstring(table_html)
             position = -1
             for index, row in enumerate(tree.xpath('.//tr')):
-                #print(''.join(row.xpath('./td[2]//text()')).strip())
-                #print(lab_number,'\n')
                 if ''.join(row.xpath('./td[2]//text()')).strip() == str(lab_number):
-                    position = index -1
-                    #print('match', position)
+                    position = index - 1
                     break
             if position < 0:
                 raise ValueError('Lab may be on next page. Send message to developer to fix')
@@ -404,10 +394,8 @@ class Enrollment_Action(ActionObject):
         tree = html.fromstring(table_html)
         for index, row in enumerate(tree.xpath('./tr[position()>1]')):
             class_text = ''.join(row.xpath('./td[2]//text()'))
-            #print(class_text)
             course_number = re.search(r'\((\d+)\)', class_text).group(1)
             if course_number in course: 
-                #print(index, course_number)
                 payload[f'DERIVED_REGFRM1_SSR_SELECT$chk${index}'] = 'Y'
                 payload[f'DERIVED_REGFRM1_SSR_SELECT${index}'] = 'Y'
 
@@ -510,11 +498,8 @@ class Enrollment_Action(ActionObject):
             tree = html.fromstring(table_html)
             position = -1
             for index, row in enumerate(tree.xpath('.//tr')):
-                #print(''.join(row.xpath('./td[2]//text()')).strip())
-                #print(lab_number,'\n')
                 if ''.join(row.xpath('./td[2]//text()')).strip() == str(swap_in_lab_number):
-                    position = index -1
-                    #print('match', position)
+                    position = index - 1
                     break
             if position < 0:
                 raise ValueError('Lab may be on next page. Send message to developer to fix')
@@ -666,4 +651,3 @@ class Enrollment_Action(ActionObject):
             results.append(result)
 
         return results
-        
