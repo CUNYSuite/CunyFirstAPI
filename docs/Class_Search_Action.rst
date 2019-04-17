@@ -4,7 +4,30 @@ Class Search Action
 This page deals with the available functions for searching for classes
 
 submit_search(parameters...)
-        Method of the Class_Search_Action object to submit a search query with the CUNYFirst class search form
+        Method of the Class_Search_Action object to submit a search query with the CUNYFirst class search form.  
+        Returns a list of dictionaries in the form of:
+
+        .. code-block:: python
+
+            [{                      # first course result
+                'subject': ...,     # all values are strings
+                'course_number': ...,
+                'title': ...,
+                'description': ...,
+                'class_number': ...,
+                'section': ...,
+                'days_and_times': ...,
+                'room': ...,
+                'instructor': ...,
+                'meeting_dates': ...,
+                'status': ...,      # 'OPEN', 'CLOSED', or 'WAITLIST'
+                'bookstore_link': ...,
+                'mode_of_instruction': ...
+            },{
+                ...     # second course result
+            }]
+
+
         The available parameters are:
 
         institution
