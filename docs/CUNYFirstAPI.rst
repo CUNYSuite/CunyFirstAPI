@@ -18,7 +18,7 @@ or if you would rather pass the username and password in to the login function:
 .. code-block:: python
 
     import cunyfirstapi
-    # login with username and password in the constructor
+    # login with username and password as parameters in the .login() function
     api = cunyfirstapi.CUNYFirstAPI()
     api.login('username', 'password')
     ... do stuff here ...
