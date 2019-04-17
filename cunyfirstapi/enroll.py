@@ -604,13 +604,13 @@ class Enrollment_Action(ActionObject):
         results['swap_in'] = []
         for row in tree.xpath('./tr[position()>1]'):
             row_info = {
-              'class' : ''.join(row.xpath('./td[1]//text()')).strip(),
-              'description' : ''.join(row.xpath('./td[2]//text()')).strip(),
-              'days_and_times' : ''.join(row.xpath('./td[3]//text()')).strip(),
-              'room' : ''.join(row.xpath('./td[4]//text()')).strip(),
-              'instructor' : ''.join(row.xpath('./td[5]//text()')).strip(),
-              'units' : ''.join(row.xpath('./td[6]//text()')).strip(),
-              'status' : ''.join(row.xpath('./td[7]//img/@alt')).strip().upper()
+              'class': ''.join(row.xpath('./td[1]//text()')).strip(),
+              'description': ''.join(row.xpath('./td[2]//text()')).strip(),
+              'days_and_times': ''.join(row.xpath('./td[3]//text()')).strip(),
+              'room': ''.join(row.xpath('./td[4]//text()')).strip(),
+              'instructor': ''.join(row.xpath('./td[5]//text()')).strip(),
+              'units': ''.join(row.xpath('./td[6]//text()')).strip(),
+              'status': ''.join(row.xpath('./td[7]//img/@alt')).strip().upper()
             }
             results['swap_in'].append(row_info)
 
@@ -666,3 +666,4 @@ class Enrollment_Action(ActionObject):
             results.append(result)
 
         return results
+        

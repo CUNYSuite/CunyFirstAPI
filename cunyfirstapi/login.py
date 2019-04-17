@@ -83,5 +83,6 @@ def logout(session):
         session.get(constants.CUNY_FIRST_LOGOUT_2_URL)
         session.get(constants.CUNY_FIRST_LOGOUT_3_URL)
         return True
+        
     except BaseException:
         return False 
