@@ -321,7 +321,7 @@ class Enrollment_Action(ActionObject):
 
     def drop_from_schedule(self, term, course, academic_career='UGRD'):
         try:
-            iterator = iter(course)
+            iter(course)
         except TypeError:
             course = {course}
 
