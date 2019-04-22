@@ -153,7 +153,7 @@ class Enrollment_Action(ActionObject):
 
         r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
 
-        if lab_number is not None:
+        if lab_number:
             table_html = re.search(r'<table dir=\'ltr\'(.|\n)*?</table>', r.text).group(0)
             tree = html.fromstring(table_html)
             position = -1
@@ -272,7 +272,11 @@ class Enrollment_Action(ActionObject):
 
         r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_CART_BASE_URL, data=payload)
         # print(r.text)
-        enroll_request_url = re.search(r'document\.location=\'(.*)\'', r.text).group(1)
+        try:
+          enroll_request_url = re.search(r'document\.location=\'(.*)\'', r.text).group(1)
+        except Exception as e:
+          print(r.text)
+          raise e
         # print(enroll_request_url)
         r = self.location()._session.get(enroll_request_url)
 
@@ -505,7 +509,7 @@ class Enrollment_Action(ActionObject):
         }
         r = self.location()._session.post(constants.CUNY_FIRST_ENROLLMENT_SWAP_URL, data=payload)
 
-        if swap_in_lab_number is not None:
+        if swap_in_lab_number:
             table_html = re.search(r'<table dir=\'ltr\'(.|\n)*?</table>', r.text).group(0)
             tree = html.fromstring(table_html)
             position = -1
