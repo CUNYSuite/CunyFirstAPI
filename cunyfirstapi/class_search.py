@@ -156,7 +156,7 @@ class Class_Search_Action(ActionObject):
     def submit_search(self, 
         institution, 
         term, 
-        course_number, 
+        course_number='', 
         subject='', 
         course_number_match='E', 
         course_career='', 

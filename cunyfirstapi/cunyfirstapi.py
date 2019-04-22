@@ -67,3 +67,6 @@ class CUNYFirstAPI():
         location = self._location_parser.get_location_object(loc)
         return location.move().action()
 
+    def logout(self):
+        cuny_login.logout(self._session)
+

@@ -77,11 +77,11 @@ def login(username, password):
 
     return new_session
 
-    def logout(session):
-        try:
-            session.get(constants.CUNY_FIRST_LOGOUT_URL)
-            session.get(constants.CUNY_FIRST_LOGOUT_2_URL)
-            session.get(constants.CUNY_FIRST_LOGOUT_3_URL)
-            return True
-        except BaseException:
-            return False 
+def logout(session):
+    try:
+        session.get(constants.CUNY_FIRST_LOGOUT_URL)
+        session.get(constants.CUNY_FIRST_LOGOUT_2_URL)
+        session.get(constants.CUNY_FIRST_LOGOUT_3_URL)
+        return True
+    except BaseException:
+        return False 
