@@ -14,6 +14,7 @@ from os import sys, path
 from lxml import html
 from bs4 import BeautifulSoup
 from lxml import etree
+import json
 from os.path import join, dirname
 from cunyfirstapi import login as cuny_login
 from cunyfirstapi.locations_enum import Locations
@@ -67,3 +68,9 @@ class CUNYFirstAPI():
         location = self._location_parser.get_location_object(loc)
         return location.move().action()
 
+    def logout(self):
+        cuny_login.logout(self._session)
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
