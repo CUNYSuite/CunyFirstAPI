@@ -19,22 +19,31 @@ from cunyfirstapi.helper import get_semester
 from cunyfirstapi.actions_locations import ActionObject, Location
 
 class Student_Grades(Location):
-    def move(self):
+    def move(self, term=None):
         self._session.get(constants.CUNY_FIRST_GRADES_URL)
         payload = {'ICACTION': 'DERIVED_SSS_SCT_SSS_TERM_LINK'}
-        term = get_semester()
+
+        if not term:
+            term = get_semester()
+
         try:
+
+
             response = self._session.post(
                 url = constants.CUNY_FIRST_GRADES_URL, 
                 data = payload
             )
             tree = html.fromstring(response.text)
             payload_key = ''.join(tree.xpath(
-                    f'//span[text()="{term}"]/parent::div/parent::td/preceding-sibling::td/div/input/@id'
+                    f'//span[text()="{term}" and ./parent::div/parent::td/following-sibling::td[2] \
+                    /div[1]/span[1]/text()="{constants.college_codes[self._college_code]}" \
+                    ]/parent::div/parent::td/preceding-sibling::td/div/input/@id'
             ))
 
             payload_value = ''.join(tree.xpath(
-                    f'//span[text()="{term}"]/parent::div/parent::td/preceding-sibling::td/div/input/@value'
+                    f'//span[text()="{term}" and ./parent::div/parent::td/following-sibling::td[2] \
+                    /div[1]/span[1]/text()="{constants.college_codes[self._college_code]}" \
+                    ]/parent::div/parent::td/preceding-sibling::td/div/input/@value'
             ))
             payload = {
                 payload_key : payload_value,

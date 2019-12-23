@@ -10,7 +10,7 @@ submit_search(parameters...)
         .. code-block:: python
             
             {
-                'success': ... ,         # True of False
+                'success': ... ,         # True or False
                 'results': [{                      # first course result
                     'subject': ...,     # all values are strings
                     'course_number': ...,
