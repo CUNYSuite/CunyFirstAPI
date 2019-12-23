@@ -26,6 +26,7 @@ def is_logged_in(session):
             allow_redirects=False)
     except TimeoutError:
         return False
+
     return not r.status_code == 302
 
 def login(username, password):  
@@ -68,12 +69,13 @@ def login(username, password):
 
         data = {'enc_post_data': encreply}
         new_session.post(
-            url = constants.CUNY_FIRST_LOGIN_2_URL, 
+            url=constants.CUNY_FIRST_LOGIN_2_URL, 
             data=data
         )
     except IndexError:
         # this means it uses the new login method
         pass
+
     response = new_session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
     tree = html.fromstring(response.text)
     new_session.icsid = ''.join(tree.xpath('//*[@id="ICSID"]/@value'))
@@ -86,5 +88,6 @@ def logout(session):
         session.get(constants.CUNY_FIRST_LOGOUT_2_URL)
         session.get(constants.CUNY_FIRST_LOGOUT_3_URL)
         return True
+
     except BaseException:
         return False 
