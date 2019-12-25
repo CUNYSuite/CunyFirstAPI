@@ -50,27 +50,29 @@ def login(username, password):
     # STUDENT CENTER
     response = new_session.get(constants.CUNY_FIRST_STUDENT_CENTER_URL)
     tree = html.fromstring(response.text)
-
-    # remember to catch this with IndexError
-    encquery = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
-
-
-    data = {'enc_post_data': encquery}
-    response = new_session.post(
-        url = constants.CUNY_FIRST_LOGIN_URL, 
-        data = data
-    )
-    tree = html.fromstring(response.text)
-
-    # remember to catch this with IndexError
-    encreply = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
+    try:
+        # remember to catch this with IndexError
+        encquery = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
 
 
-    data = {'enc_post_data': encreply}
-    new_session.post(
-        url = constants.CUNY_FIRST_LOGIN_2_URL, 
-        data=data
-    )
+        data = {'enc_post_data': encquery}
+        response = new_session.post(
+            url = constants.CUNY_FIRST_LOGIN_URL, 
+            data = data
+        )
+        tree = html.fromstring(response.text)
+
+        # remember to catch this with IndexError
+        encreply = tree.xpath('//*[@name="enc_post_data"]/@value')[0]
+
+
+        data = {'enc_post_data': encreply}
+        new_session.post(
+            url = constants.CUNY_FIRST_LOGIN_2_URL, 
+            data=data
+        )
+    except IndexError:
+        pass
     response = new_session.get(constants.CUNY_FIRST_SIGNED_IN_STUDENT_CENTER_URL)
     tree = html.fromstring(response.text)
     new_session.icsid = ''.join(tree.xpath('//*[@id="ICSID"]/@value'))
