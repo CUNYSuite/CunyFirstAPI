@@ -106,5 +106,11 @@ class Student_Grades_Action(ActionObject):
                 term_gpa_text = '-1'
 
             term_gpa = float(term_gpa_text)
-            cumulative_gpa = float(last_row.find_all('td')[-1].get_text())
+
+            cumulative_gpa_text = last_row.find_all('td')[-1].get_text().strip()
+            if not cumulative_gpa_text:
+                cumulative_gpa_text = '-1'
+
+            cumulative_gpa = float(cumulative_gpa_text)
+            
             return { 'results': result, 'term_gpa': term_gpa, 'cumulative_gpa': cumulative_gpa }
